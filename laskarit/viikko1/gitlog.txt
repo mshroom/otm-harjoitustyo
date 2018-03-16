@@ -1,0 +1,116 @@
+commit bd93cfab356a785711c20ebbe71b1ce5aa05c5c7
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 21:18:41 2018 +0200
+
+    Muokkauksia ja poistoja
+
+ tiedostoja/file1  | 0
+ tiedostoja/file2  | 0
+ tiedostoja/file22 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6e06b932da50571f02225f4b43d02a4a2062d16f
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 21:13:43 2018 +0200
+
+    lisättiin tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 5c0955057b5f7f9c14c14a124ba6445e78dc9605
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 21:00:32 2018 +0200
+
+    Lisäystä ja poistoa
+
+ eka.txt    | 2 +-
+ kolmas.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit b6d60fb3177e740b8cccbecf209a94505e9eb14b
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:56:27 2018 +0200
+
+    uudelleennimettiin tiedosto
+
+ eka.txt      | 26 ++++++++++++++++++++++++++
+ tiedosto.txt | 26 --------------------------
+ 2 files changed, 26 insertions(+), 26 deletions(-)
+
+commit 79115ff06d8f062b7abcf3abd855aac07ca7510d
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:55:23 2018 +0200
+
+    Poistettiin toinen
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 480ca438cb59aad83922b2f23c6944ec18441244
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:52:21 2018 +0200
+
+    muokattiin tiedosto.txt
+
+ tiedosto.txt | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
+
+commit 489aa4c291ba7161dd05809b96aa79162a66e083
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:50:53 2018 +0200
+
+    Tekstiä tiedostoon
+
+ tiedosto.txt | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+commit 19a51360a51bde979d3192d4b3443f28629a7da6
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:42:22 2018 +0200
+
+    lisättiin stuff-hakemisto tiedostoineen
+
+ stuff/jokutiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 625027672c55c02ea1f720c8e434313910dcf586
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:40:57 2018 +0200
+
+    muokattiin toista ja kolmatta
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 375ee4eb294decb18c47c431e7f9da65278063ad
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:39:48 2018 +0200
+
+    lisättiin kolmas
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ded5388f0d2be4b7977b9baeeeee14a85b15b4ab
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:33:56 2018 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit b27eb7085ef7edcc404d07f3ea9c166b79e94b71
+Author: minna <32199029+mshroom@users.noreply.github.com>
+Date:   Fri Mar 16 20:31:32 2018 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+

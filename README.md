@@ -2,7 +2,9 @@
 
 **Viikottaisten laskarien** palautukset löytyvät hakemistosta *laskarit*.
 
-## Ensimmäisen viikon tehtävät
+## Viikkotehtävät
+
+### Viikko 1
 
 [komentorivi.txt](https://github.com/mshroom/otm-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 

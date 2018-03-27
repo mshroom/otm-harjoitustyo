@@ -1,8 +1,12 @@
 # Ohjelmistotekniikan menetelmät -harjoitustyö
 
-**Viikottaisten laskarien** palautukset löytyvät hakemistosta *laskarit*.
+Harjoitustyön aiheena on sovellus, johon käyttäjät voivat kirjata tietoa liikuntasuorituksistaan, asettaa itselleen tavoitteita ja seurata niiden toteutumista.
 
-## Viikkotehtävät
+## Dokumentaatio
+
+[Vaatimusmäärittely / Software requirements specification](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/Software_requirements_specification.md)
+
+## Kurssin viikkotehtävät
 
 ### Viikko 1
 

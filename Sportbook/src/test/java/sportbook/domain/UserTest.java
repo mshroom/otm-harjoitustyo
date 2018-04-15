@@ -23,6 +23,13 @@ public class UserTest {
     }
     
     @Test
+    public void userIsCreatedCorrectly() {
+        assertEquals(1, user.getId());
+        assertEquals("hello", user.getUsername());
+        assertEquals("world", user.getPassword());
+    }
+    
+    @Test
     public void usersWithSameUsernameEqual() {
         User other = new User(4, "hello", "sailor");
         assertTrue(user.equals(other));

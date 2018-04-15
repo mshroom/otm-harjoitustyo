@@ -22,6 +22,13 @@ public class ActivityTest {
     }
     
     @Test
+    public void activityIsCreatedCorrectly() {
+        assertEquals(1, activity.getId());
+        assertEquals("running", activity.getName());
+        assertEquals("meters", activity.getUnit());
+    }
+    
+    @Test
     public void activitiesWithSimilarNameAndUnitsEqual() {
         Activity other = new Activity(2, "running", "meters");
         assertTrue(activity.equals(other));

@@ -38,8 +38,7 @@ public class Database {
             }
         } catch (Throwable t) {
             System.out.println("Error >> " + t.getMessage());        
-    }
-        
+        }        
     }
 
     private List<String> sqlStatements() {

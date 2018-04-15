@@ -27,7 +27,7 @@ public class ActivityDao {
         this.database = database;
     }
     
-    public Activity create(String name, String unit) throws SQLException{
+    public Activity create(String name, String unit) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Activity (name, unit) VALUES (?, ?)");
         stmt.setString(1, name);
@@ -85,7 +85,7 @@ public class ActivityDao {
         
     public Activity findByToString(String toString) throws SQLException {
         List<Activity> activities = this.findAll();
-        for (int i = 0; i < activities.size(); i ++) {
+        for (int i = 0; i < activities.size(); i++) {
             Activity a = activities.get(i);
             if (a.toString().equals(toString)) {
                 return a;

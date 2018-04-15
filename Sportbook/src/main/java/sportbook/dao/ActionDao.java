@@ -124,8 +124,8 @@ public class ActionDao {
         List<Action> daysWorkouts = new ArrayList<>();
         for (int i = 0; i < usersWorkouts.size(); i++) {
             Action a = usersWorkouts.get(i);
-            if (simpleDate.format(a.getDate()).equals(simpleDate.format(date))) {               
-                    daysWorkouts.add(a);                
+            if (simpleDate.format(a.getDate()).equals(simpleDate.format(date))) {
+                daysWorkouts.add(a);
             }
         }
         return daysWorkouts;
@@ -136,8 +136,8 @@ public class ActionDao {
         List<Action> daysGoals = new ArrayList<>();
         for (int i = 0; i < usersGoals.size(); i++) {
             Action a = usersGoals.get(i);
-            if (simpleDate.format(a.getDate()).equals(simpleDate.format(date))) {               
-                    daysGoals.add(a);                
+            if (simpleDate.format(a.getDate()).equals(simpleDate.format(date))) {
+                daysGoals.add(a);
             }
         }
         return daysGoals;
@@ -145,7 +145,7 @@ public class ActionDao {
 
     public void delete(Action action) throws SQLException {
         Connection connection = database.getConnection();
-                
+
         if (action.getSetAsGoal() && action.getAccomplished()) {
             PreparedStatement stmt = connection.prepareStatement("UPDATE Action SET accomplished = ? WHERE id = ?");
             stmt.setBoolean(1, false);
@@ -168,7 +168,7 @@ public class ActionDao {
         stmt.setInt(2, action.getId());
         stmt.executeUpdate();
         stmt.close();
-        
+
         connection.close();
     }
 

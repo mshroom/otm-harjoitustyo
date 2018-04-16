@@ -5,6 +5,11 @@
  */
 package sportbook.ui;
 
+import sportbook.domain.Sportbook;
+import sportbook.dao.Database;
+import sportbook.dao.UserDao;
+import sportbook.dao.ActivityDao;
+import sportbook.dao.ActionDao;
 import java.util.Calendar;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -19,14 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import sportbook.dao.ActionDao;
-import sportbook.dao.ActivityDao;
-import sportbook.dao.UserDao;
-import sportbook.domain.User;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sportbook.dao.Database;
+
 
 /**
  *
@@ -34,6 +32,8 @@ import sportbook.dao.Database;
  */
 public class Main extends Application {
 
+    static Sportbook sportbook;
+    static Calendar calendar;
     Scene loginScene;
     Scene registerScene;
     Scene mainScene;
@@ -41,13 +41,9 @@ public class Main extends Application {
     Label welcomeLabel;
     BorderPane mainBorderPane;
     StackPane welcomeStackPane;
-    static Calendar calendar;
-    static UserDao userDao;
-    static ActivityDao activityDao;
-    static ActionDao actionDao;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         stage.setTitle("Sportbook");
 
         // Creating login scene
@@ -77,24 +73,22 @@ public class Main extends Application {
         loginGridPane.setPadding(new Insets(20, 20, 20, 20));
 
         loginButton.setOnAction((event) -> {
-            try {
-                User user = userDao.findByUsername(usernameField.getText().trim());
-                if (user == null) {
-                    error.setText("Unknown username");
-                    return;
-                } else if (!passwordField.getText().trim().equals(user.getPassword())) {
-                    error.setText("Password is not valid");
-                    passwordField.clear();
-                    return;
-                }
-                userDao.setCurrentUser(user);
-                welcomeLabel.setText("Welcome " + userDao.getCurrentUser().getUsername() + "!");
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            int result = sportbook.login(username, password);
+            if (result == 1) {
+                error.setText("Unknown username");
+                return;
+            } else if (result == 2) {
+                error.setText("Password is not valid");
+                passwordField.clear();
+                return;
+            } else if (result == 3) {
+                welcomeLabel.setText("Welcome " + sportbook.getLoggedIn().getUsername() + "!");
                 mainBorderPane.setCenter(welcomeStackPane);
                 usernameField.clear();
                 passwordField.clear();
                 stage.setScene(mainScene);
-            } catch (SQLException ex) {
-                System.out.println(ex);
             }
         });
 
@@ -131,23 +125,19 @@ public class Main extends Application {
         registerGridPane.setPadding(new Insets(20, 20, 20, 20));
 
         registerButton2.setOnAction((event) -> {
-            try {
-                User user = userDao.findByUsername(usernameField2.getText().trim());
-                if (user != null) {
-                    error2.setText("Username is already in use");
-                    return;
-                }
-                userDao.create(usernameField2.getText().trim(), passwordField2.getText().trim());
-                userDao.setCurrentUser(userDao.findByUsername(usernameField2.getText().trim()));
-                welcomeLabel.setText("Welcome " + userDao.getCurrentUser().getUsername() + "!");
+            String username = usernameField2.getText().trim();
+            String password = passwordField2.getText().trim();
+            int result = sportbook.register(username, password);
+            if (result == 1) {
+                error2.setText("Username is already in use");
+                return;
+            } else if (result == 2) {
+                welcomeLabel.setText("Welcome " + sportbook.getLoggedIn().getUsername() + "!");
                 mainBorderPane.setCenter(welcomeStackPane);
                 usernameField2.clear();
                 passwordField2.clear();
                 stage.setScene(mainScene);
-            } catch (SQLException ex) {
-                System.out.println(ex);
             }
-
         });
 
         backButton.setOnAction((event) -> {
@@ -156,11 +146,11 @@ public class Main extends Application {
 
         registerScene = new Scene(registerGridPane);
 
-        // Creating main scene
+        // Creating main scene        
         mainBorderPane = new BorderPane();
 
-        // Creating welcome view
-        welcomeLabel = new Label("Welcome " + userDao.getCurrentUser().getUsername() + "!");
+        // Creating welcome view        
+        welcomeLabel = new Label("Welcome " + sportbook.getLoggedIn().getUsername() + "!");
         welcomeStackPane = new StackPane();
 
         welcomeStackPane.setPrefSize(300, 180);
@@ -169,15 +159,15 @@ public class Main extends Application {
         welcomeStackPane.setAlignment(Pos.CENTER);
 
         // Creating settings view
-        SettingsView settingsView = new SettingsView(userDao, stage, loginScene);
+        SettingsView settingsView = new SettingsView(sportbook, stage, loginScene);
 
         // Creating calendar view
-        CalendarView calendarView = new CalendarView(actionDao, userDao, activityDao, calendar);
+        CalendarView calendarView = new CalendarView(sportbook, calendar);
 
         // Creating activity view
-        ActivityView activityView = new ActivityView(activityDao, actionDao);
+        ActivityView activityView = new ActivityView(sportbook);
 
-        // adding menu to main scene
+        // Adding menu to main scene
         HBox menu = new HBox();
         menu.setPadding(new Insets(20, 20, 20, 20));
         menu.setSpacing(10);
@@ -196,19 +186,11 @@ public class Main extends Application {
         settingsButton.setOnAction((event) -> mainBorderPane.setCenter(settingsView.getView()));
 
         calendarButton.setOnAction((event) -> {
-            try {
-                mainBorderPane.setCenter(calendarView.getView());
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            }
+            mainBorderPane.setCenter(calendarView.getView());
         });
 
         activityButton.setOnAction((event) -> {
-            try {
-                mainBorderPane.setCenter(activityView.getView());
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            }
+            mainBorderPane.setCenter(activityView.getView());
         });
 
         // Setting main scene to start with welcome view
@@ -221,17 +203,19 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws Exception {
+        
         // Preparing database
         Database database = new Database("jdbc:sqlite:sportbookdata.db");
         database.init();
-        System.out.println("Hello world");
-        // Preparing calendar and daos
-        calendar = Calendar.getInstance();
-        userDao = new UserDao(database);
-        activityDao = new ActivityDao(database);
-        actionDao = new ActionDao(database, activityDao, userDao);
         
+        // Preparing calendar and sportbook
+        calendar = Calendar.getInstance();
+        UserDao userDao = new UserDao(database);
+        ActivityDao activityDao = new ActivityDao(database);
+        ActionDao actionDao = new ActionDao(database, activityDao, userDao);
+        sportbook = new Sportbook(userDao, activityDao, actionDao);
+
         launch(Main.class);
     }
-    
+
 }

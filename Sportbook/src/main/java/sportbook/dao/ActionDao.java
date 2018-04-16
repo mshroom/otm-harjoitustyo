@@ -5,17 +5,17 @@
  */
 package sportbook.dao;
 
+import sportbook.domain.Action;
+import sportbook.domain.Activity;
+import sportbook.domain.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import sportbook.domain.Action;
-import sportbook.domain.Activity;
-import sportbook.domain.User;
 
 /**
  *
@@ -172,8 +172,8 @@ public class ActionDao {
         connection.close();
     }
 
-    private Action unite(Action a, Action b) {
-        a.setUnits(a.getUnits() + b.getUnits());
-        return a;
-    }
+//    private Action unite(Action a, Action b) {
+//        a.setUnits(a.getUnits() + b.getUnits());
+//        return a;
+//    }
 }

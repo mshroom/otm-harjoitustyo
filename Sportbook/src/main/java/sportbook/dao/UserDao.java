@@ -5,13 +5,14 @@
  */
 package sportbook.dao;
 
+import sportbook.domain.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import sportbook.domain.User;
+
 
 /**
  *
@@ -19,11 +20,9 @@ import sportbook.domain.User;
  */
 public class UserDao {
     
-    private User currentUser;
     private Database database;
 
     public UserDao(Database database) {
-        this.currentUser = new User(-1, "Hello", "World");
         this.database = database;
     }
 
@@ -100,14 +99,6 @@ public class UserDao {
         return users;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    public User getCurrentUser() {
-        return this.currentUser;
-    }
-
     public void delete(User userToBeDeleted) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM User WHERE id = ?");
@@ -125,7 +116,6 @@ public class UserDao {
         stmt.executeUpdate();
         stmt.close();
         connection.close();
-        this.currentUser.setUsername(username);
     }
 
     public void changePassword(User user, String password) throws SQLException {
@@ -136,6 +126,5 @@ public class UserDao {
         stmt.executeUpdate();
         stmt.close();
         connection.close();
-        this.currentUser.setPassword(password);
     }
 }

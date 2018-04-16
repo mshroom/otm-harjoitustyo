@@ -5,10 +5,7 @@
  */
 package sportbook.ui;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
+import sportbook.domain.Sportbook;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,25 +15,22 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import sportbook.dao.ActionDao;
-import sportbook.dao.ActivityDao;
-import sportbook.domain.Activity;
+
 
 /**
  *
  * @author minna
  */
 public class ActivityView {
-    private ActivityDao activityDao;
-    private ActionDao actionDao;
+
+    private Sportbook sportbook;
     private ComboBox comboBox;
 
-    public ActivityView(ActivityDao activityDao, ActionDao actionDao) {
-        this.activityDao = activityDao;
-        this.actionDao = actionDao;
+    public ActivityView(Sportbook sportbook) {
+        this.sportbook = sportbook;
     }
 
-    public Parent getView() throws SQLException {
+    public Parent getView() {
 
         Label nameLabel = new Label("Create a new activity");
         TextField nameField = new TextField();
@@ -46,7 +40,7 @@ public class ActivityView {
         unitsField.setPromptText("Name of units");
         Button createButton = new Button("Create");
         Label deleteLabel = new Label("Remove activity from the list");
-        comboBox = new ComboBox(activityDao.listActivities());
+        comboBox = new ComboBox(sportbook.listActivities());
         comboBox.setPromptText("Choose an activity");
         Button deleteButton = new Button("Remove");
         Label error = new Label("");
@@ -70,47 +64,44 @@ public class ActivityView {
         activityGridPane.setPadding(new Insets(20, 20, 20, 20));
 
         createButton.setOnAction((event) -> {
-            try {
-                Activity newActivity = activityDao.findByNameAndUnit(nameField.getText(), unitsField.getText());
-                if (newActivity != null) {
-                    error.setText("Activity already exists");
-                } else {
-                    activityDao.create(nameField.getText(), unitsField.getText());
-                    error.setText("Activity was created");
-                    nameField.clear();
-                    unitsField.clear();
-                }
+            String name = nameField.getText().trim();
+            String units = unitsField.getText().trim();
+            int result = sportbook.createActivity(name, units);
+            if (result == 1) {
+                error.setText("Activity already exists");
+            } else if (result == 2) {
+                error.setText("Activity was created");
+                nameField.clear();
+                unitsField.clear();
                 this.refreshList();
-            } catch (SQLException ex) {
+            } else if (result == 3) {
                 error.setText("Problem occurred while accessing the database.");
             }
         });
 
         deleteButton.setOnAction((event) -> {
-            try {
-                Activity a = activityDao.findByToString(comboBox.getValue().toString());
-                if (actionDao.findAllByActivity(a).isEmpty()) {
-                    activityDao.delete(a);
-                    error.setText("Activity was removed");
-                    comboBox.setValue(comboBox.getPromptText());
-                    nameField.clear();
-                    unitsField.clear();
-                    this.refreshList();
-                } else {
-                    error.setText("Activity is in use and cannot be removed.");
-                    nameField.clear();
-                    unitsField.clear();                    
-                }
-            } catch (SQLException ex) {
+            String activity = comboBox.getValue().toString();
+            int result = sportbook.deleteActivity(activity);
+            if (result == 1) {
+                error.setText("Activity was removed");
+                comboBox.setValue(comboBox.getPromptText());
+                nameField.clear();
+                unitsField.clear();
+                this.refreshList();
+            } else if (result == 2) {
+                error.setText("Activity is in use and cannot be removed.");
+                nameField.clear();
+                unitsField.clear();
+            } else if (result == 3) {
                 error.setText("Problem occurred while accessing the database.");
-            }
+            }            
         });
         return activityGridPane;
     }
 
-    private void refreshList() throws SQLException {
+    private void refreshList() {
         comboBox.getItems().clear();
-        ObservableList<String> list = activityDao.listActivities();
+        ObservableList<String> list = sportbook.listActivities();
         list.forEach(a -> {
             comboBox.getItems().add(a);
         });

@@ -5,15 +5,13 @@
  */
 package sportbook.dao;
 
+import sportbook.domain.Activity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import sportbook.domain.Activity;
+import java.util.ArrayList;
 
 /**
  *
@@ -82,17 +80,6 @@ public class ActivityDao {
         
         return a;
     }
-        
-    public Activity findByToString(String toString) throws SQLException {
-        List<Activity> activities = this.findAll();
-        for (int i = 0; i < activities.size(); i++) {
-            Activity a = activities.get(i);
-            if (a.toString().equals(toString)) {
-                return a;
-            }
-        }
-        return null;
-    }
     
     public List<Activity> findAll() throws SQLException {
         Connection connection = database.getConnection();
@@ -121,14 +108,5 @@ public class ActivityDao {
         stmt.executeUpdate();
         stmt.close();
         connection.close();
-    }
-    
-    public ObservableList<String> listActivities() throws SQLException {            
-        ObservableList<String> list = FXCollections.observableArrayList();
-        List<Activity> activities = this.findAll();
-        activities.forEach(activity -> {
-            list.add(activity.toString());            
-        });
-        return list;
     }
 }

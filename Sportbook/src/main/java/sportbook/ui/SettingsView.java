@@ -5,9 +5,7 @@
  */
 package sportbook.ui;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import sportbook.domain.Sportbook;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -17,22 +15,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import sportbook.dao.UserDao;
-import sportbook.domain.User;
+
 /**
  *
  * @author minna
  */
 public class SettingsView {
     
-    private UserDao userDao;
+    private Sportbook sportbook;
     private Stage stage;
     private Scene loginScene;
 
-    public SettingsView(UserDao userDao, Stage stage, Scene loginScene) {
-        this.userDao = userDao;
+    public SettingsView(Sportbook sportbook, Stage stage, Scene loginScene) {
+        this.sportbook = sportbook;
         this.stage = stage;
         this.loginScene = loginScene;
     }
@@ -75,27 +71,24 @@ public class SettingsView {
         settingsGridPane.setPadding(new Insets(20, 20, 20, 20));
 
         usernameButton.setOnAction((event) -> {
-            try {
-                User user = userDao.findByUsername(usernameField.getText().trim());
-                if (user != null) {
-                    error.setText("Username is already in use");
-                } else {
-                    userDao.changeUsername(userDao.getCurrentUser(), usernameField.getText());
-                    error.setText("Username was changed");
-                }
-            } catch (SQLException ex) {
+            String username = usernameField.getText().trim();
+            int result = sportbook.changeUsername(username);
+            if (result == 1) {
+                error.setText("Username is already in use");
+            } else if (result == 2) {
+                error.setText("Username was changed");
+            } else if (result == 3) {
                 error.setText("A problem occurred while accessing the database");
-            }
-
+            }            
         });
 
         passwordButton.setOnAction((event) -> {
-            try {
-                userDao.changePassword(userDao.getCurrentUser(), passwordField.getText());
+            String password = passwordField.getText().trim();
+            if (sportbook.changePassword(password)) {
                 error.setText("Password was changed");
-            } catch (SQLException ex) {
-                System.out.println("A problem occurred while accessing the database");
-            }            
+            } else {
+                error.setText("A problem occurred while accessing the database");
+            }                        
         });
 
         deleteButton.setOnAction((event) -> {
@@ -111,12 +104,11 @@ public class SettingsView {
         });
 
         confirmationButton.setOnAction((event) -> {
-            try {
-                userDao.delete(userDao.getCurrentUser());
+            if (sportbook.deleteAccount()) {
                 stage.setScene(loginScene);
-            } catch (SQLException ex) {
+            } else {
                 error.setText("A problem occurred while accessing the database");
-            }            
+            }          
         });
 
         return settingsGridPane;

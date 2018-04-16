@@ -48,12 +48,6 @@ public class ActivityDaoTest {
     }
     
     @Test
-    public void activityCanBeFoundByToString() throws SQLException {
-        Activity a = new Activity(1, "running", "meters");
-        assertEquals(a, activitydao.findByToString(a.toString()));
-    }
-    
-    @Test
     public void activityCanBeDeleted() throws SQLException {
         Activity a = activitydao.findOne(1);
         activitydao.delete(a);

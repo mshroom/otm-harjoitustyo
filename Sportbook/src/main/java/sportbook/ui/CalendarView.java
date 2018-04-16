@@ -5,13 +5,11 @@
  */
 package sportbook.ui;
 
-import java.sql.SQLException;
+import sportbook.domain.Sportbook;
+import sportbook.domain.Action;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,36 +20,28 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import sportbook.dao.ActionDao;
-import sportbook.dao.ActivityDao;
-import sportbook.dao.UserDao;
-import sportbook.domain.Action;
+
 /**
  *
  * @author minna
  */
 public class CalendarView {
-    
-    private ActionDao actionDao;
+
+    private Sportbook sportbook;
     private Calendar calendar;
     private SimpleDateFormat simpleDate;
     private VBox workoutNodes;
     private VBox goalNodes;
-    private UserDao userDao;
-    private ActivityDao activityDao;
     private Label error;
 
-    public CalendarView(ActionDao actionDao, UserDao userDao, ActivityDao activityDao, Calendar calendar) {
-        this.actionDao = actionDao;
-        this.userDao = userDao;
-        this.activityDao = activityDao;
+    public CalendarView(Sportbook sportbook, Calendar calendar) {
+        this.sportbook = sportbook;
         this.calendar = calendar;
         this.simpleDate = new SimpleDateFormat("dd/MM/yyyy");
     }
 
-    public Parent getView() throws SQLException {
+    public Parent getView() {
 
         Button previousButton = new Button("Previous day");
         Label dateLabel = new Label(simpleDate.format(calendar.getTime()));
@@ -60,7 +50,7 @@ public class CalendarView {
         Button addGoal = new Button("Add a goal");
         Label workoutsLabel = new Label("Completed workouts");
         Label goalsLabel = new Label("Goals to complete");
-        ComboBox comboBox = new ComboBox(activityDao.listActivities());
+        ComboBox comboBox = new ComboBox(sportbook.listActivities());
         comboBox.setVisible(false);
         comboBox.setPromptText("Choose an activity");
         TextField numberOfUnits = new TextField();
@@ -126,11 +116,10 @@ public class CalendarView {
             save.setText("Save workout");
             save.setVisible(true);
             save.setOnAction((event2) -> {
-                try {
-                    actionDao.create(userDao.getCurrentUser(), activityDao.findByToString(comboBox.getValue().toString()), Integer.parseInt(numberOfUnits.getText()), false, true, calendar.getTime());
-                } catch (SQLException ex) {
+                String activity = comboBox.getValue().toString();
+                int units = Integer.parseInt(numberOfUnits.getText());
+                if (!sportbook.saveAction(activity, units, false, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
-                    System.out.println(ex);
                 }
                 drawWorkoutList();
                 drawGoalList();
@@ -154,11 +143,10 @@ public class CalendarView {
             save.setText("Save goal");
             save.setVisible(true);
             save.setOnAction((event2) -> {
-                try {
-                    actionDao.create(userDao.getCurrentUser(), activityDao.findByToString(comboBox.getValue().toString()), Integer.parseInt(numberOfUnits.getText()), true, false, calendar.getTime());
-                } catch (SQLException ex) {
+                String activity = comboBox.getValue().toString();
+                int units = Integer.parseInt(numberOfUnits.getText());
+                if (!sportbook.saveAction(activity, units, true, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
-                    System.out.println(ex);
                 }
                 drawWorkoutList();
                 drawGoalList();
@@ -207,21 +195,19 @@ public class CalendarView {
         }
 
         deleteButton.setOnAction((event) -> {
-            try {
-                actionDao.delete(action);
+            if (sportbook.deleteAction(action)) {
                 drawWorkoutList();
                 drawGoalList();
-            } catch (SQLException ex) {
+            } else {
                 error.setText("A problem occurred while accessing the database");
             }
         });
 
         completeButton.setOnAction((event) -> {
-            try {
-                actionDao.complete(action);
+            if (sportbook.completeAction(action)) {
                 drawWorkoutList();
                 drawGoalList();
-            } catch (SQLException ex) {
+            } else {
                 error.setText("A problem occurred while accessing the database");
             }
         });
@@ -230,27 +216,25 @@ public class CalendarView {
 
     private void drawWorkoutList() {
         workoutNodes.getChildren().clear();
-        try {
-            List<Action> workouts = actionDao.findAllWorkoutsByUserAndDay(userDao.getCurrentUser(), calendar.getTime());
+        List<Action> workouts = sportbook.getDailyWorkouts(calendar.getTime());
+        if (workouts != null) {
             workouts.forEach(workout -> {
-            workoutNodes.getChildren().add(createActionNode(workout));
-        });
-        } catch (SQLException ex) {
+                workoutNodes.getChildren().add(createActionNode(workout));
+            });
+        } else {
             error.setText("A problem occurred while accessing the database");
         }
-        
     }
 
     private void drawGoalList() {
         goalNodes.getChildren().clear();
-        try {
-            List<Action> goals = actionDao.findAllGoalsByUserAndDay(userDao.getCurrentUser(), calendar.getTime());
+        List<Action> goals = sportbook.getDailyGoals(calendar.getTime());
+        if (goals != null) {
             goals.forEach(goal -> {
-            goalNodes.getChildren().add(createActionNode(goal));
-        });
-        } catch (SQLException ex) {
+                goalNodes.getChildren().add(createActionNode(goal));
+            });
+        } else {
             error.setText("A problem occurred while accessing the database");
         }
-        
     }
 }

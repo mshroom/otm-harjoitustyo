@@ -1,6 +1,6 @@
 # Time-tracking
 
-| day | time | what was done |
+| day | hours | what was done |
 | :----:|:-----| :-----|
 | 30.3. | 3    | making experiments with JavaFX |
 | 30.3. | 5    | creating project, adding domain and dao classes without database |
@@ -12,3 +12,4 @@
 | 15.4. | 3    | adding more tests to domain and dao classes |
 | 15.4. | 1    | adding chekcstyle for project and fixing style errors |
 | 16.4. | 3    | creating a new domain class for controlling Sportbook and moving there relevant stuff from ui and dao classes |
+| 17.4. | 1    | drawing package / class diagram

@@ -6,4 +6,6 @@ Harjoitustyön aiheena on sovellus, johon käyttäjät voivat kirjata tietoa lii
 
 [Vaatimusmäärittely / Software requirements specification](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/Software_requirements_specification.md)
 
+[Arkkitehtuurikuvaus / Software architecture](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/architecture.md)
+
 [Työaikakirjanpito / Time-tracking](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/time-tracking.md)

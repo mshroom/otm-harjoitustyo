@@ -12,4 +12,5 @@
 | 15.4. | 3    | adding more tests to domain and dao classes |
 | 15.4. | 1    | adding chekcstyle for project and fixing style errors |
 | 16.4. | 3    | creating a new domain class for controlling Sportbook and moving there relevant stuff from ui and dao classes |
-| 17.4. | 1    | drawing package / class diagram
+| 17.4. | 1    | writing software architecture, drawing package / class diagram |
+| sum   | 35   |    |

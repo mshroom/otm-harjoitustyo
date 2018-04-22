@@ -9,4 +9,5 @@
     <suppress files="sportbook.ui.ActivityView.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="sportbook.ui.CalendarView.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="sportbook.ui.SettingsView.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="sportbook.ui.StatisticsView.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>

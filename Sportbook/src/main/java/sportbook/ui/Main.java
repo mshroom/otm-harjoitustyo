@@ -154,8 +154,7 @@ public class Main extends Application {
         welcomeStackPane = new StackPane();
 
         welcomeStackPane.setPrefSize(300, 180);
-        welcomeStackPane.getChildren()
-                .add(welcomeLabel);
+        welcomeStackPane.getChildren().add(welcomeLabel);
         welcomeStackPane.setAlignment(Pos.CENTER);
 
         // Creating settings view
@@ -166,6 +165,9 @@ public class Main extends Application {
 
         // Creating activity view
         ActivityView activityView = new ActivityView(sportbook);
+        
+        // Creating statistics view
+        StatisticsView statisticsView = new StatisticsView(sportbook, calendar);
 
         // Adding menu to main scene
         HBox menu = new HBox();
@@ -176,7 +178,8 @@ public class Main extends Application {
         Button settingsButton = new Button("Settings");
         Button calendarButton = new Button("My workouts and goals");
         Button activityButton = new Button("Add and remove activities");
-        menu.getChildren().addAll(logoutButton, settingsButton, calendarButton, activityButton);
+        Button statisticsButton = new Button("Statistics");
+        menu.getChildren().addAll(logoutButton, settingsButton, calendarButton, activityButton, statisticsButton);
         mainBorderPane.setTop(menu);
 
         logoutButton.setOnAction((event) -> {
@@ -185,14 +188,12 @@ public class Main extends Application {
 
         settingsButton.setOnAction((event) -> mainBorderPane.setCenter(settingsView.getView()));
 
-        calendarButton.setOnAction((event) -> {
-            mainBorderPane.setCenter(calendarView.getView());
-        });
+        calendarButton.setOnAction((event) -> mainBorderPane.setCenter(calendarView.getView()));
 
-        activityButton.setOnAction((event) -> {
-            mainBorderPane.setCenter(activityView.getView());
-        });
-
+        activityButton.setOnAction((event) -> mainBorderPane.setCenter(activityView.getView()));
+        
+        statisticsButton.setOnAction((event) -> mainBorderPane.setCenter(statisticsView.getView()));
+        
         // Setting main scene to start with welcome view
         mainBorderPane.setCenter(welcomeStackPane);
         mainScene = new Scene(mainBorderPane, 800, 600);

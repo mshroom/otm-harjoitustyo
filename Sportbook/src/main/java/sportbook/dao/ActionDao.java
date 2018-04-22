@@ -24,12 +24,14 @@ import java.util.Date;
 public class ActionDao {
 
     private SimpleDateFormat simpleDate;
+    private SimpleDateFormat monthDate;
     private Database database;
     private ActivityDao activityDao;
     private UserDao userDao;
 
     public ActionDao(Database database, ActivityDao activityDao, UserDao userDao) {
         this.simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+        this.monthDate = new SimpleDateFormat("MM/YYYY");
         this.database = database;
         this.activityDao = activityDao;
         this.userDao = userDao;
@@ -73,7 +75,30 @@ public class ActionDao {
         return actions;
     }
 
-    public List<Action> findAllGoalsByUser(User user) throws SQLException {
+    public ArrayList<Action> findAllByUser(User user) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ?");
+        stmt.setInt(1, user.getId());
+
+        ArrayList<Action> actions = new ArrayList<>();
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            Activity activity = activityDao.findOne(rs.getInt("activity_id"));
+            int units = rs.getInt("units");
+            boolean setAsGoal = rs.getBoolean("setAsGoal");
+            boolean accomplished = rs.getBoolean("accomplished");
+            Date date = rs.getDate("time");
+
+            actions.add(new Action(id, user, activity, units, setAsGoal, accomplished, date));
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return actions;
+    }
+
+    public List<Action> findAllUncompletedGoalsByUser(User user) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND setAsGoal = ? AND accomplished = ?");
         stmt.setInt(1, user.getId());
@@ -85,6 +110,29 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
+            int units = rs.getInt("units");
+            Date date = rs.getDate("time");
+
+            usersActions.add(new Action(id, user, activity, units, true, false, date));
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return usersActions;
+    }
+
+    public List<Action> findAllUncompletedGoalsByUserAndActivity(User user, Activity activity) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND setAsGoal = ? AND accomplished = ?");
+        stmt.setInt(1, user.getId());
+        stmt.setInt(2, activity.getId());
+        stmt.setBoolean(3, true);
+        stmt.setBoolean(4, false);
+
+        ArrayList<Action> usersActions = new ArrayList<>();
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
             int units = rs.getInt("units");
             Date date = rs.getDate("time");
 
@@ -119,6 +167,64 @@ public class ActionDao {
         return usersActions;
     }
 
+    public List<Action> findAllWorkoutsByUserAndActivity(User user, Activity activity) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND accomplished = ?");
+        stmt.setInt(1, user.getId());
+        stmt.setInt(2, activity.getId());
+        stmt.setBoolean(3, true);
+
+        ArrayList<Action> usersActions = new ArrayList<>();
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            int units = rs.getInt("units");
+            boolean setAsGoal = rs.getBoolean("setAsGoal");
+            Date date = rs.getDate("time");
+
+            usersActions.add(new Action(id, user, activity, units, setAsGoal, true, date));
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return usersActions;
+    }
+
+    public List<Action> findAllCompletedGoalsByUserAndActivity(User user, Activity activity) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND setAsGoal = ? AND accomplished = ?");
+        stmt.setInt(1, user.getId());
+        stmt.setInt(2, activity.getId());
+        stmt.setBoolean(3, true);
+        stmt.setBoolean(4, true);
+
+        ArrayList<Action> usersActions = new ArrayList<>();
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            int units = rs.getInt("units");
+            Date date = rs.getDate("time");
+
+            usersActions.add(new Action(id, user, activity, units, true, true, date));
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return usersActions;
+    }
+
+    public List<Action> findAllByUserAndMonth(User user, Date date) throws SQLException {
+        List<Action> actions = this.findAllByUser(user);
+        List<Action> monthsActions = new ArrayList<>();
+        for (int i = 0; i < actions.size(); i++) {
+            Action a = actions.get(i);
+            if (monthDate.format(a.getDate()).equals(monthDate.format(date))) {
+                monthsActions.add(a);
+            }
+        }
+        return monthsActions;
+    }
+
     public List<Action> findAllWorkoutsByUserAndDay(User user, Date date) throws SQLException {
         List<Action> usersWorkouts = this.findAllWorkoutsByUser(user);
         List<Action> daysWorkouts = new ArrayList<>();
@@ -131,8 +237,44 @@ public class ActionDao {
         return daysWorkouts;
     }
 
-    public List<Action> findAllGoalsByUserAndDay(User user, Date date) throws SQLException {
-        List<Action> usersGoals = this.findAllGoalsByUser(user);
+    public double countAllWorkoutsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
+        List<Action> usersWorkouts = this.findAllWorkoutsByUserAndActivity(user, activity);
+        double sum = 0l;
+        for (int i = 0; i < usersWorkouts.size(); i++) {
+            Action a = usersWorkouts.get(i);
+            if (monthDate.format(a.getDate()).equals(monthDate.format(date))) {
+                sum += a.getUnits();
+            }
+        }
+        return sum;
+    }
+
+    public int countCompletedGoalsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
+        List<Action> usersGoals = this.findAllCompletedGoalsByUserAndActivity(user, activity);
+        List<Action> monthsGoals = new ArrayList<>();
+        for (int i = 0; i < usersGoals.size(); i++) {
+            Action a = usersGoals.get(i);
+            if (monthDate.format(a.getDate()).equals(monthDate.format(date))) {
+                monthsGoals.add(a);
+            }
+        }
+        return monthsGoals.size();
+    }
+
+    public int countUncompletedGoalsByUserAndMonth(User user, Activity activity, Date date) throws SQLException {
+        List<Action> usersGoals = this.findAllUncompletedGoalsByUserAndActivity(user, activity);
+        List<Action> monthsGoals = new ArrayList<>();
+        for (int i = 0; i < usersGoals.size(); i++) {
+            Action a = usersGoals.get(i);
+            if (monthDate.format(a.getDate()).equals(monthDate.format(date))) {
+                monthsGoals.add(a);
+            }
+        }
+        return monthsGoals.size();
+    }
+
+    public List<Action> findAllUncompletedGoalsByUserAndDay(User user, Date date) throws SQLException {
+        List<Action> usersGoals = this.findAllUncompletedGoalsByUser(user);
         List<Action> daysGoals = new ArrayList<>();
         for (int i = 0; i < usersGoals.size(); i++) {
             Action a = usersGoals.get(i);
@@ -171,9 +313,4 @@ public class ActionDao {
 
         connection.close();
     }
-
-//    private Action unite(Action a, Action b) {
-//        a.setUnits(a.getUnits() + b.getUnits());
-//        return a;
-//    }
 }

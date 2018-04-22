@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author minna
  */
-public class Activity {
+public class Activity implements Comparable<Activity> {
     private int id;
     private String name;
     private String unit;
@@ -80,5 +80,9 @@ public class Activity {
     public String toString() {
         return this.name + ", " + this.unit;
     }
-    
+
+    @Override
+    public int compareTo(Activity a) {
+        return this.name.compareTo(a.getName());
+    }    
 }

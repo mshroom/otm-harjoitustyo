@@ -19,6 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -48,8 +49,7 @@ public class CalendarView {
         Button nextButton = new Button("Next day");
         Button addWorkout = new Button("Add a workout");
         Button addGoal = new Button("Add a goal");
-        Label workoutsLabel = new Label("Completed workouts");
-        Label goalsLabel = new Label("Goals to complete");
+
         ComboBox comboBox = new ComboBox(sportbook.listActivities());
         comboBox.setVisible(false);
         comboBox.setPromptText("Choose an activity");
@@ -70,15 +70,16 @@ public class CalendarView {
         calendarGridPane.add(comboBox, 0, 2);
         calendarGridPane.add(numberOfUnits, 1, 2);
         calendarGridPane.add(save, 2, 2);
-        calendarGridPane.add(workoutsLabel, 0, 4);
-        calendarGridPane.add(goalsLabel, 2, 4);
         calendarGridPane.add(error, 0, 3);
 
-        calendarGridPane.setPrefSize(600, 380);
         calendarGridPane.setAlignment(Pos.TOP_CENTER);
         calendarGridPane.setVgap(10);
         calendarGridPane.setHgap(10);
         calendarGridPane.setPadding(new Insets(20, 20, 20, 20));
+        for (int i = 0; i < 3; i++) {
+            ColumnConstraints column = new ColumnConstraints(200);
+            calendarGridPane.getColumnConstraints().add(column);
+        }
 
         nextButton.setOnAction((event) -> {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -158,6 +159,11 @@ public class CalendarView {
             });
         });
 
+        GridPane listGridPane = new GridPane();
+
+        Label workoutsLabel = new Label("Completed workouts");
+        Label goalsLabel = new Label("Goals to complete");
+
         ScrollPane workoutScrollBar = new ScrollPane();
         ScrollPane goalScrollBar = new ScrollPane();
 
@@ -170,10 +176,27 @@ public class CalendarView {
         workoutScrollBar.setContent(workoutNodes);
         goalScrollBar.setContent(goalNodes);
 
-        calendarGridPane.add(workoutScrollBar, 0, 5);
-        calendarGridPane.add(goalScrollBar, 2, 5);
+        listGridPane.add(workoutsLabel, 0, 0);
+        listGridPane.add(goalsLabel, 1, 0);
+        listGridPane.add(workoutScrollBar, 0, 1);
+        listGridPane.add(goalScrollBar, 1, 1);
 
-        return calendarGridPane;
+        listGridPane.setAlignment(Pos.TOP_CENTER);
+        listGridPane.setVgap(10);
+        listGridPane.setHgap(10);
+        listGridPane.setPadding(new Insets(20, 20, 20, 20));
+
+        for (int i = 0; i < 2; i++) {
+            ColumnConstraints column = new ColumnConstraints(300);
+            listGridPane.getColumnConstraints().add(column);
+        }
+
+        GridPane viewGridPane = new GridPane();
+        viewGridPane.setAlignment(Pos.TOP_CENTER);
+        viewGridPane.add(calendarGridPane, 0, 0);
+        viewGridPane.add(listGridPane, 0, 1);
+
+        return viewGridPane;
     }
 
     private Node createActionNode(Action action) {
@@ -193,6 +216,11 @@ public class CalendarView {
                 node.add(completedLabel, 0, 1);
             }
         }
+
+        node.setHgap(10);
+        node.setPadding(new Insets(5, 5, 5, 5));
+        node.getColumnConstraints().add(new ColumnConstraints(200));
+        node.getColumnConstraints().add(new ColumnConstraints(75));
 
         deleteButton.setOnAction((event) -> {
             if (sportbook.deleteAction(action)) {

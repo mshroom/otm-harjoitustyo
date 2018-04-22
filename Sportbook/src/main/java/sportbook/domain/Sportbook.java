@@ -11,10 +11,12 @@ import sportbook.dao.ActionDao;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 
 /**
  *
@@ -191,18 +193,39 @@ public class Sportbook {
             System.out.println(ex);
             return null;
         }
+        Collections.sort(workouts);
         return workouts;
     }
 
     public List<Action> getDailyGoals(Date date) {
         List<Action> goals = new ArrayList<>();
         try {
-            goals = actionDao.findAllGoalsByUserAndDay(this.loggedIn, date);
+            goals = actionDao.findAllUncompletedGoalsByUserAndDay(this.loggedIn, date);
         } catch (SQLException ex) {
             System.out.println(ex);
             return null;
         }
+        Collections.sort(goals);
         return goals;
+    }
+
+    public List<Activity> getMonthlyActivities(Date date) {
+        List<Activity> activities = new ArrayList<>();
+        List<Action> actions;
+        try {
+            actions = actionDao.findAllByUserAndMonth(this.loggedIn, date);
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return null;
+        }
+        for (int i = 0; i < actions.size(); i++) {
+            Activity a = actions.get(i).getActivity();
+            if (!activities.contains(a)) {
+                activities.add(a);
+            }
+        }
+        Collections.sort(activities);
+        return activities;
     }
 
     private Activity findByToString(String activity) {
@@ -218,5 +241,56 @@ public class Sportbook {
             System.out.println(ex);
         }
         return null;
+    }
+
+    public List<StatisticsNode> createStatistics(Date date) {
+        List<StatisticsNode> statistics = new ArrayList<>();
+        List<Activity> activities = this.getMonthlyActivities(date);
+        for (int i = 0; i < activities.size(); i++) {
+            try {
+                Activity a = activities.get(i);
+                String activity = a.toString();
+                double workouts = actionDao.countAllWorkoutsByUserAndActivityAndMonth(loggedIn, a, date);
+                int completed = actionDao.countCompletedGoalsByUserAndActivityAndMonth(loggedIn, a, date);
+                int uncompleted = actionDao.countUncompletedGoalsByUserAndMonth(loggedIn, a, date);
+                StatisticsNode node = new StatisticsNode(activity, workouts, completed, uncompleted);
+                statistics.add(node);
+            } catch (SQLException ex) {
+                System.out.println(ex);
+                return null;
+            }            
+        }
+        return statistics;
+    }
+
+    public class StatisticsNode {
+
+        private String activity;
+        private double workouts;
+        private int completed;
+        private int uncompleted;
+
+        public StatisticsNode(String activity, double workouts, int completed, int uncompleted) {
+            this.activity = activity;
+            this.workouts = workouts;
+            this.completed = completed;
+            this.uncompleted = uncompleted;
+        }
+        
+        public String getActivity() {
+            return this.activity;
+        }
+        
+        public String getWorkouts() {
+            return "" + this.workouts;
+        }
+        
+        public String getCompleted() {
+            return "" + this.completed;
+        }
+        
+        public String getUncompleted() {
+            return "" + this.uncompleted;
+        }
     }
 }

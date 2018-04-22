@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author minna
  */
-public class Action {
+public class Action implements Comparable<Action> {
     private int id;
     private int units;
     private Boolean accomplished;
@@ -84,5 +84,10 @@ public class Action {
     
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public int compareTo(Action a) {
+        return this.activity.compareTo(a.activity);
     }
 }

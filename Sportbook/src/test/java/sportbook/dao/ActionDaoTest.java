@@ -55,7 +55,7 @@ public class ActionDaoTest {
     @Test
     public void usersGoalsCanBeFound() throws SQLException {
         User u = userdao.findOne(1);
-        List<Action> goals = actiondao.findAllGoalsByUser(u);
+        List<Action> goals = actiondao.findAllUncompletedGoalsByUser(u);
         assertEquals(1, goals.size());
     }
     
@@ -69,7 +69,7 @@ public class ActionDaoTest {
     @Test
     public void usersGoalsCanBeFoundByDay() throws SQLException {
         User u = userdao.findOne(1);
-        List<Action> goals = actiondao.findAllGoalsByUserAndDay(u, calendar.getTime());
+        List<Action> goals = actiondao.findAllUncompletedGoalsByUserAndDay(u, calendar.getTime());
         assertEquals(1, goals.size());
     }
     
@@ -83,11 +83,11 @@ public class ActionDaoTest {
     @Test
     public void completedGoalIsListedAsWorkout() throws SQLException {
         User u = userdao.findOne(1);
-        List<Action> goals = actiondao.findAllGoalsByUser(u);
+        List<Action> goals = actiondao.findAllUncompletedGoalsByUser(u);
         Action a = goals.get(0);
         assertFalse(a.getAccomplished());
         actiondao.complete(a);
-        List<Action> goals2 = actiondao.findAllGoalsByUser(u);
+        List<Action> goals2 = actiondao.findAllUncompletedGoalsByUser(u);
         assertEquals(0, goals2.size());
         List<Action> workouts = actiondao.findAllWorkoutsByUser(u);
         assertEquals(2, workouts.size());
@@ -104,7 +104,7 @@ public class ActionDaoTest {
         List<Action> running2 = actiondao.findAllByActivity(act);
         Action r2 = running2.get(0);
         actiondao.delete(r2);
-        List<Action> goals2 = actiondao.findAllGoalsByUser(u);
+        List<Action> goals2 = actiondao.findAllUncompletedGoalsByUser(u);
         Action a = goals2.get(0);
         assertFalse(a.getAccomplished());
     }
@@ -112,9 +112,9 @@ public class ActionDaoTest {
     @Test
     public void uncompletedGoalCanBeDeleted() throws SQLException {
         User u = userdao.findOne(1);
-        Action a = actiondao.findAllGoalsByUser(u).get(0);
+        Action a = actiondao.findAllUncompletedGoalsByUser(u).get(0);
         actiondao.delete(a);
-        List<Action> goals = actiondao.findAllGoalsByUser(u);
+        List<Action> goals = actiondao.findAllUncompletedGoalsByUser(u);
         assertEquals(0, goals.size());
     }
     

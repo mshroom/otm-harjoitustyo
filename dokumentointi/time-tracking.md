@@ -16,4 +16,5 @@
 | 21.4. | 2    | creating statistics view to ui |
 | 22.4. | 3    | adding methods to create personal statistics |
 | 22.4. | 2    | fixing ui layout |
-| sum   | 42   |    |
+| 22.4. | 1    | updating software architecture, drawing a sequence diagram |
+| sum   | 43   |    |

@@ -13,4 +13,7 @@
 | 15.4. | 1    | adding chekcstyle for project and fixing style errors |
 | 16.4. | 3    | creating a new domain class for controlling Sportbook and moving there relevant stuff from ui and dao classes |
 | 17.4. | 1    | writing software architecture, drawing package / class diagram |
-| sum   | 35   |    |
+| 21.4. | 2    | creating statistics view to ui |
+| 22.4. | 3    | adding methods to create personal statistics |
+| 22.4. | 2    | fixing ui layout |
+| sum   | 42   |    |

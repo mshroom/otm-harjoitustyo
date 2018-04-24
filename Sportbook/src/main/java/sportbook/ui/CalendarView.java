@@ -44,6 +44,8 @@ public class CalendarView {
 
     public Parent getView() {
 
+        error = new Label("");
+
         Button previousButton = new Button("Previous day");
         Label dateLabel = new Label(simpleDate.format(calendar.getTime()));
         Button nextButton = new Button("Next day");
@@ -58,7 +60,6 @@ public class CalendarView {
         numberOfUnits.setPromptText("How many units?");
         Button save = new Button("Save");
         save.setVisible(false);
-        error = new Label("");
 
         GridPane calendarGridPane = new GridPane();
 
@@ -70,7 +71,6 @@ public class CalendarView {
         calendarGridPane.add(comboBox, 0, 2);
         calendarGridPane.add(numberOfUnits, 1, 2);
         calendarGridPane.add(save, 2, 2);
-        calendarGridPane.add(error, 0, 3);
 
         calendarGridPane.setAlignment(Pos.TOP_CENTER);
         calendarGridPane.setVgap(10);
@@ -82,6 +82,7 @@ public class CalendarView {
         }
 
         nextButton.setOnAction((event) -> {
+            error.setText("");
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             dateLabel.setText(simpleDate.format(calendar.getTime()));
             drawWorkoutList();
@@ -94,6 +95,7 @@ public class CalendarView {
         });
 
         previousButton.setOnAction((event) -> {
+            error.setText("");
             calendar.add(Calendar.DAY_OF_MONTH, -1);
             dateLabel.setText(simpleDate.format(calendar.getTime()));
             drawWorkoutList();
@@ -106,6 +108,7 @@ public class CalendarView {
         });
 
         addWorkout.setOnAction((event) -> {
+            error.setText("");
             if (comboBox.isVisible()) {
                 comboBox.setVisible(false);
                 numberOfUnits.setVisible(false);
@@ -117,8 +120,20 @@ public class CalendarView {
             save.setText("Save workout");
             save.setVisible(true);
             save.setOnAction((event2) -> {
+                error.setText("");
+                if (comboBox.getValue() == null || comboBox.getValue() == comboBox.getPromptText()) {
+                    error.setText("Please select an activity");
+                    return;
+                }
                 String activity = comboBox.getValue().toString();
-                int units = Integer.parseInt(numberOfUnits.getText());
+                int units = 0;
+                try {
+                    units = Integer.parseInt(numberOfUnits.getText());
+                } catch (NumberFormatException e) {
+                    error.setText("Please insert a number into the units field");
+                    numberOfUnits.clear();
+                    return;
+                }
                 if (!sportbook.saveAction(activity, units, false, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
                 }
@@ -133,6 +148,7 @@ public class CalendarView {
         });
 
         addGoal.setOnAction((event) -> {
+            error.setText("");
             if (comboBox.isVisible()) {
                 comboBox.setVisible(false);
                 numberOfUnits.setVisible(false);
@@ -144,8 +160,20 @@ public class CalendarView {
             save.setText("Save goal");
             save.setVisible(true);
             save.setOnAction((event2) -> {
+                error.setText("");
+                if (comboBox.getValue() == null || comboBox.getValue() == comboBox.getPromptText()) {
+                    error.setText("Please select an activity");
+                    return;
+                }
                 String activity = comboBox.getValue().toString();
-                int units = Integer.parseInt(numberOfUnits.getText());
+                int units = 0;
+                try {
+                    units = Integer.parseInt(numberOfUnits.getText());
+                } catch (NumberFormatException e) {
+                    error.setText("Please insert a number into the units field");
+                    numberOfUnits.clear();
+                    return;
+                }
                 if (!sportbook.saveAction(activity, units, true, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
                 }
@@ -194,7 +222,8 @@ public class CalendarView {
         GridPane viewGridPane = new GridPane();
         viewGridPane.setAlignment(Pos.TOP_CENTER);
         viewGridPane.add(calendarGridPane, 0, 0);
-        viewGridPane.add(listGridPane, 0, 1);
+        viewGridPane.add(error, 0, 1);
+        viewGridPane.add(listGridPane, 0, 2);
 
         return viewGridPane;
     }

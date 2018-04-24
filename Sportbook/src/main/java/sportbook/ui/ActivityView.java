@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-
 /**
  *
  * @author minna
@@ -80,6 +79,10 @@ public class ActivityView {
         });
 
         deleteButton.setOnAction((event) -> {
+            if (comboBox.getValue() == null || comboBox.getValue() == comboBox.getPromptText()) {
+                error.setText("Please select an activity");
+                return;
+            }
             String activity = comboBox.getValue().toString();
             int result = sportbook.deleteActivity(activity);
             if (result == 1) {
@@ -94,7 +97,7 @@ public class ActivityView {
                 unitsField.clear();
             } else if (result == 3) {
                 error.setText("Problem occurred while accessing the database.");
-            }            
+            }
         });
         return activityGridPane;
     }

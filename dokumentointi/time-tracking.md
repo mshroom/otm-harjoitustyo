@@ -17,4 +17,6 @@
 | 22.4. | 3    | adding methods to create personal statistics |
 | 22.4. | 2    | fixing ui layout |
 | 22.4. | 1    | updating software architecture, drawing a sequence diagram |
-| sum   | 43   |    |
+| 24.4. | 2    | adding tests for Sportbook class |
+| 24.4. | 1    | fixing ui layout and bugs |
+| sum   | 46   |    |

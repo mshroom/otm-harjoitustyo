@@ -19,4 +19,6 @@
 | 22.4. | 1    | updating software architecture, drawing a sequence diagram |
 | 24.4. | 2    | adding tests for Sportbook class |
 | 24.4. | 1    | fixing ui layout and bugs |
-| sum   | 46   |    |
+| 28.4. | 3    | creating admin features and adding admin view to ui |
+| 28.4. | 2    | adding more tests |
+| sum   | 51   |    |

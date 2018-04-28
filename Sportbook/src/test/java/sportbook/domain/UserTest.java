@@ -19,7 +19,7 @@ public class UserTest {
         
     @Before
     public void setUp() {
-        user = new User(1, "hello", "world");
+        user = new User(1, "hello", "world", false);
     }
     
     @Test
@@ -31,13 +31,13 @@ public class UserTest {
     
     @Test
     public void usersWithSameUsernameEqual() {
-        User other = new User(4, "hello", "sailor");
+        User other = new User(4, "hello", "sailor", false);
         assertTrue(user.equals(other));
     }
     
     @Test
     public void usersWithDifferentUsernamesDoNotEqual() {
-        User other = new User(1, "wonderful", "world");
+        User other = new User(1, "wonderful", "world", false);
         assertFalse(user.equals(other));
     }
     

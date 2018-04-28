@@ -58,7 +58,7 @@ public class SportbookTest {
     @Test
     public void userCanLogin() {
         assertEquals(3, sportbook.login("Testuser", "Testpassword"));
-        assertEquals(new User(1, "Testuser", "Testpassword"), sportbook.getLoggedIn());
+        assertEquals(new User(1, "Testuser", "Testpassword", false), sportbook.getLoggedIn());
     }
     
     @Test
@@ -69,7 +69,7 @@ public class SportbookTest {
     @Test
     public void userCanRegister() {
         assertEquals(2, sportbook.register("Newuser", "Testpassword"));
-        assertEquals(new User(2, "Newuser", "Testpassword"), sportbook.getLoggedIn());
+        assertEquals(new User(2, "Newuser", "Testpassword", false), sportbook.getLoggedIn());
         assertEquals(3, sportbook.login("Newuser", "Testpassword"));
     }
     
@@ -139,25 +139,25 @@ public class SportbookTest {
     
     @Test
     public void actionCanBeDeleted() {
-        assertTrue(sportbook.deleteAction(new Action(1, new User(1, "Testuser", "Testpassword"), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime())));
+        assertTrue(sportbook.deleteAction(new Action(1, new User(1, "Testuser", "Testpassword", false), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime())));
     }
     
     @Test
     public void actionCanBeCompleted() {
-        assertTrue(sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword"), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime())));
+        assertTrue(sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword", false), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime())));
     }
     
     @Test
     public void dailyWorkoutsContainWorkoutsAndCompletedGoals() {
         assertEquals(1, sportbook.getDailyWorkouts(calendar.getTime()).size());
-        sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword"), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime()));
+        sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword", false), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime()));
         assertEquals(2, sportbook.getDailyWorkouts(calendar.getTime()).size());
     }
     
     @Test
     public void dailyGoalsContainOnlyUncompletedGoals() {
         assertEquals(1, sportbook.getDailyGoals(calendar.getTime()).size());
-        sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword"), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime()));
+        sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword", false), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime()));
         assertEquals(0, sportbook.getDailyGoals(calendar.getTime()).size());        
     }
     

@@ -43,12 +43,12 @@ public class UserDaoTest {
     
     @Test
     public void userCanBeFoundById() throws SQLException {
-        assertEquals(new User(1, "Testuser", "Testpassword"), userdao.findOne(1));
+        assertEquals(new User(1, "Testuser", "Testpassword", false), userdao.findOne(1));
     }
     
     @Test
     public void userCanBeFoundByUsername() throws SQLException {
-        assertEquals(new User(1, "Testuser", "Testpassword"), userdao.findByUsername("Testuser"));
+        assertEquals(new User(1, "Testuser", "Testpassword", false), userdao.findByUsername("Testuser"));
     }
     
     @Test

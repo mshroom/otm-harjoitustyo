@@ -10,6 +10,10 @@ Harjoitustyön aiheena on sovellus, johon käyttäjät voivat kirjata tietoa lii
 
 [Työaikakirjanpito / Time-tracking](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/time-tracking.md)
 
+## Releaset
+
+[Viikko 5 / Week 5 release](https://github.com/mshroom/otm-harjoitustyo/releases/tag/week5)
+
 ## Komentorivitoiminnot
 
 ### Testaus

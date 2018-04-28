@@ -127,6 +127,78 @@ public class ActionDaoTest {
         assertEquals(0, workouts.size());
     }
     
+    @Test
+    public void allUsersActionsCanBeFound() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        assertEquals(2, actiondao.findAllByUser(user).size());
+        actiondao.create(userdao.findOne(1), activitydao.findOne(2), 60, false, true, calendar.getTime());
+        assertEquals(3, actiondao.findAllByUser(user).size());
+    }
+    
+    @Test
+    public void allUncompletedGoalsByUserAndActivityCanBeFound() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(1, "running", "meters");
+        assertEquals(1, actiondao.findAllUncompletedGoalsByUserAndActivity(user, activity).size());
+        actiondao.create(userdao.findOne(1), activitydao.findOne(1), 100, true, false, calendar.getTime());
+        assertEquals(2, actiondao.findAllUncompletedGoalsByUserAndActivity(user, activity).size());
+        actiondao.create(userdao.findOne(1), activitydao.findOne(1), 100, true, true, calendar.getTime());
+        assertEquals(2, actiondao.findAllUncompletedGoalsByUserAndActivity(user, activity).size());
+    }
+    
+    @Test
+    public void allCompletedGoalsByUserAndActivityCanBeFound() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(1, "running", "meters");
+        assertEquals(0, actiondao.findAllCompletedGoalsByUserAndActivity(user, activity).size());
+        actiondao.create(userdao.findOne(1), activitydao.findOne(1), 100, true, true, calendar.getTime());
+        assertEquals(1, actiondao.findAllCompletedGoalsByUserAndActivity(user, activity).size());
+    }
+
+    @Test
+    public void allWorkoutsByUserAndActivityCanBeFound() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(2, "swimming", "minutes");
+        assertEquals(1, actiondao.findAllWorkoutsByUserAndActivity(user, activity).size());
+        actiondao.create(user, activity, 100, true, true, calendar.getTime());
+        assertEquals(2, actiondao.findAllWorkoutsByUserAndActivity(user, activity).size());
+        actiondao.create(user, activity, 100, false, true, calendar.getTime());
+        assertEquals(3, actiondao.findAllWorkoutsByUserAndActivity(user, activity).size());
+    }    
+    
+    @Test
+    public void monthlyWorkoutsCanBeCounted() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(2, "swimming", "minutes");
+        assertEquals(60, actiondao.countAllWorkoutsByUserAndActivityAndMonth(user, activity, calendar.getTime()), 0.1);
+        actiondao.create(user, activity, 100, true, true, calendar.getTime());
+        assertEquals(160, actiondao.countAllWorkoutsByUserAndActivityAndMonth(user, activity, calendar.getTime()), 0.1);
+        calendar.add(Calendar.MONTH, 1);
+        assertEquals(0, actiondao.countAllWorkoutsByUserAndActivityAndMonth(user, activity, calendar.getTime()), 0.1);
+    }
+    
+    @Test
+    public void monthlyCompletedGoalsCanBeCounted() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(1, "running", "meters");
+        assertEquals(0, actiondao.countCompletedGoalsByUserAndActivityAndMonth(user, activity, calendar.getTime()));
+        actiondao.create(user, activity, 100, true, true, calendar.getTime());
+        assertEquals(1, actiondao.countCompletedGoalsByUserAndActivityAndMonth(user, activity, calendar.getTime()));
+        calendar.add(Calendar.MONTH, 1);
+        assertEquals(0, actiondao.countCompletedGoalsByUserAndActivityAndMonth(user, activity, calendar.getTime()));
+    }
+    
+    @Test
+    public void monthlyUncompletedGoalsCanBeCounted() throws SQLException {
+        User user = new User(1, "Testuser", "Testpassword", false);
+        Activity activity = new Activity(1, "running", "meters");
+        assertEquals(1, actiondao.countUncompletedGoalsByUserAndMonth(user, activity, calendar.getTime()));
+        actiondao.create(user, activity, 100, true, false, calendar.getTime());
+        assertEquals(2, actiondao.countUncompletedGoalsByUserAndMonth(user, activity, calendar.getTime()));
+        calendar.add(Calendar.MONTH, -1);
+        assertEquals(0, actiondao.countCompletedGoalsByUserAndActivityAndMonth(user, activity, calendar.getTime()), 0.1);
+    }    
+    
     @After
     public void tearDown() {
         testDatabase.delete();

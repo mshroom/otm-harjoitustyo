@@ -94,8 +94,20 @@ public class SportbookTest {
     @Test
     public void userAccountCanBeDeleted() {
         sportbook.register("Newuser", "Newpassword");
+        assertEquals(2, sportbook.getUsers().size());
         assertEquals(true, sportbook.deleteAccount());
+        assertEquals(1, sportbook.getUsers().size());
         assertEquals(1, sportbook.login("Newuser", "Newpassword"));
+    }
+    
+    @Test
+    public void userAccountCanBeDeleted2() {
+        User other = new User(2, "User2", "password", false);
+        sportbook.register("User2", "password");
+        assertEquals(2, sportbook.getUsers().size());
+        assertEquals(true, sportbook.deleteAccount(other));
+        assertEquals(1, sportbook.login("User2", "password"));
+        assertEquals(1, sportbook.getUsers().size());
     }
     
     @Test
@@ -159,6 +171,27 @@ public class SportbookTest {
         assertEquals(1, sportbook.getDailyGoals(calendar.getTime()).size());
         sportbook.completeAction(new Action(1, new User(1, "Testuser", "Testpassword", false), new Activity(1, "running", "meters"), 100, true, false, calendar.getTime()));
         assertEquals(0, sportbook.getDailyGoals(calendar.getTime()).size());        
+    }
+    
+    @Test
+    public void monthlyActivitiesCanBeFound() {
+        assertEquals(2, sportbook.getMonthlyActivities(calendar.getTime()).size());
+        calendar.add(Calendar.MONTH, 1);
+        assertEquals(0, sportbook.getMonthlyActivities(calendar.getTime()).size());
+    }
+    
+    @Test
+    public void usersAreFound() {
+        assertTrue(sportbook.hasUsers());
+        assertEquals(1, sportbook.getUsers().size());
+        sportbook.deleteAccount(new User(1, "Testuser", "Testpassword", false));
+        assertFalse(sportbook.hasUsers());
+        assertEquals(0, sportbook.getUsers().size());
+    }
+    
+    @Test
+    public void userCanBeSetAdmin() {
+        assertTrue(sportbook.setAdmin("Testuser"));        
     }
     
     @After

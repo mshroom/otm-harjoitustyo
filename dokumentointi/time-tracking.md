@@ -21,4 +21,5 @@
 | 24.4. | 1    | fixing ui layout and bugs |
 | 28.4. | 3    | creating admin features and adding admin view to ui |
 | 28.4. | 2    | adding more tests |
-| sum   | 51   |    |
+| 28.4. | 2    | creating javadoc documentation for domain classes |
+| sum   | 53   |    |

@@ -8,8 +8,9 @@ package sportbook.domain;
 import java.util.Date;
 
 /**
- *
- * @author minna
+ * Class is used to create and control Action objects.
+ * 
+ * @author mshroom
  */
 public class Action implements Comparable<Action> {
     private int id;
@@ -86,6 +87,9 @@ public class Action implements Comparable<Action> {
         this.date = date;
     }
 
+    /**
+     * Method sorts the two actions based on their activities.
+     */
     @Override
     public int compareTo(Action a) {
         return this.activity.compareTo(a.activity);

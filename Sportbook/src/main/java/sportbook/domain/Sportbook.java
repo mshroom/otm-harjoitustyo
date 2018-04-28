@@ -19,11 +19,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- *
- * @author minna
+ * Class contains the essential software logic.
+ * 
+ * @author mshroom
  */
 public class Sportbook {
-
     private UserDao userDao;
     private ActivityDao activityDao;
     private ActionDao actionDao;
@@ -40,6 +40,17 @@ public class Sportbook {
         return this.loggedIn;
     }
 
+    /**
+     * Method is used to login a registered user.
+     * 
+     * @param username User's username
+     * @param password User's password
+     * 
+     * @return 1 if username does not exist, 
+     * 2 if password is incorrect, 
+     * 3 if login is successful and 
+     * 4 if there is a failure in accessing saved data.
+     */
     public int login(String username, String password) {
         try {
             User user = userDao.findByUsername(username);
@@ -56,6 +67,16 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to register a new user.
+     * 
+     * @param username User's username
+     * @param password User's password
+     * 
+     * @return 1 if the username is already in use and registration fails,
+     * 2 if the registration is successful and
+     * 3 if there is a failure in accessing saved data.
+     */
     public int register(String username, String password) {
         try {
             User user = userDao.findByUsername(username);
@@ -70,7 +91,16 @@ public class Sportbook {
             return 3;
         }
     }
-
+    
+    /**
+     * Method is used to change the username of the current user.
+     * 
+     * @param username New username
+     * 
+     * @return 1 if the username is already in use,
+     * 2 if the change is successful and
+     * 3 if there is a failure in accessing saved data.
+     */
     public int changeUsername(String username) {
         try {
             User user = userDao.findByUsername(username);
@@ -87,6 +117,14 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to change the password of the current user.
+     * 
+     * @param password New password
+     * 
+     * @return true if the change is successful,
+     * false if there is a failure in saving data.
+     */
     public boolean changePassword(String password) {
         try {
             userDao.changePassword(this.loggedIn, password);
@@ -98,6 +136,12 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to delete the account of the current user.
+     * 
+     * @return true if the deletion is successful,
+     * false if there is a failure in saving data.
+     */
     public boolean deleteAccount() {
         try {
             userDao.delete(this.loggedIn);
@@ -108,6 +152,14 @@ public class Sportbook {
         }
     }
     
+    /**
+     * Method is used to delete the account of the given user.
+     * 
+     * @param user User to be deleted
+     * 
+     * @return true if the deletion is successful,
+     * false if there is a failure in saving data.
+     */
     public boolean deleteAccount(User user) {
         try {
             userDao.delete(user);
@@ -118,6 +170,16 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to create a new activity.
+     * 
+     * @param activity Name of the activity
+     * @param units Name of the units to be used with the activity
+     * 
+     * @return 1 if the activity with the same data already exists, 
+     * 2 if the creation is successful and
+     * 3 if there is a failure in saving data.
+     */
     public int createActivity(String activity, String units) {
         try {
             Activity newActivity = activityDao.findByNameAndUnit(activity, units);
@@ -133,6 +195,17 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to delete an activity from the database.
+     * The activity will not be deleted if there are saved workouts
+     * or goals that use the activity.
+     * 
+     * @param activity The toString() representation of the activity
+     * 
+     * @return 1 if the deletion is successful,
+     * 2 if the activity is in use and cannot be deleted and
+     * 3 if there is a failure in saving data.
+     */
     public int deleteActivity(String activity) {
         try {
             Activity a = this.findByToString(activity);
@@ -148,6 +221,11 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to create a list of all saved activities.
+     * 
+     * @return list of the String representations of the activities
+     */
     public ObservableList<String> listActivities() {
         ObservableList<String> list = FXCollections.observableArrayList();
         try {
@@ -161,6 +239,17 @@ public class Sportbook {
         return list;
     }
 
+    /**
+     * Method is used to save a workout or a goal for the current user.
+     * 
+     * @param activity The string representation of the activity
+     * @param numberOfUnits The number of units to be saved
+     * @param goal True if the action is a goal
+     * @param date Date of the action
+     * 
+     * @return true if the creation is successful,
+     * false if there is a failure in saving data.
+     */
     public boolean saveAction(String activity, int numberOfUnits, boolean goal, Date date) {
         try {
             if (goal) {
@@ -175,6 +264,15 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to delete a saved workout or goal. 
+     * If the action is a completed goal, the goal will be marked as uncomplete but not deleted.
+     * 
+     * @param action Action to be deleted
+     * 
+     * @return true if the deletion is successful
+     * false if there is a failure in saving data.
+     */
     public boolean deleteAction(Action action) {
         try {
             actionDao.delete(action);
@@ -185,6 +283,14 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method is used to mark a goal as complete.
+     * 
+     * @param action Goal to be completed
+     * 
+     * @return true if the update is successful,
+     * false if there is a failure in saving data.
+     */
     public boolean completeAction(Action action) {
         try {
             actionDao.complete(action);
@@ -195,6 +301,13 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method finds all workouts and completed goals of the current user on the given day.
+     * 
+     * @param date The date of the day observed.
+     * 
+     * @return list of all workouts or null if there is a failure in accessing saved data.
+     */
     public List<Action> getDailyWorkouts(Date date) {
         List<Action> workouts = new ArrayList<>();
         try {
@@ -207,6 +320,13 @@ public class Sportbook {
         return workouts;
     }
 
+    /**
+     * Method finds all uncompleted goals of the current user on the given day.
+     * 
+     * @param date The date of the day observed.
+     * 
+     * @return list of all uncompleted goals or null if there is a failure in accessing saved data.
+     */
     public List<Action> getDailyGoals(Date date) {
         List<Action> goals = new ArrayList<>();
         try {
@@ -219,6 +339,13 @@ public class Sportbook {
         return goals;
     }
 
+    /**
+     * Method finds all activities that the user has used on the given month.
+     * 
+     * @param date The date of the day observed
+     * 
+     * @return a list of used activities in alphabetical order
+     */
     public List<Activity> getMonthlyActivities(Date date) {
         List<Activity> activities = new ArrayList<>();
         List<Action> actions;
@@ -238,6 +365,13 @@ public class Sportbook {
         return activities;
     }
 
+    /**
+     * Method finds an activity based on it's String representation.
+     * The method is useful in interpreting texts in the user interface.
+     * 
+     * @param activity
+     * @return 
+     */
     private Activity findByToString(String activity) {
         try {
             List<Activity> activities = activityDao.findAll();
@@ -253,6 +387,15 @@ public class Sportbook {
         return null;
     }
 
+    /**
+     * Method creates monthly statistics for the current user on the given month.
+     * Statistics include the amount of workouts and the number of completed and uncompleted goals 
+     * for each activity that the user has used on the month in question.
+     * 
+     * @param date The date of the month in question
+     * 
+     * @return Statistics in a list of StatisticNode objects
+     */
     public List<StatisticsNode> createStatistics(Date date) {
         List<StatisticsNode> statistics = new ArrayList<>();
         List<Activity> activities = this.getMonthlyActivities(date);
@@ -273,6 +416,11 @@ public class Sportbook {
         return statistics;
     }
 
+    /**
+     * Method creates a list of all registered users.
+     * 
+     * @return  a list or null if there is a failure in fetching saved data.
+     */
     public List<User> getUsers() {
         try {
             return userDao.findAll();
@@ -281,6 +429,12 @@ public class Sportbook {
         }
     }
 
+    /**
+     * Method tells if there are registered users.
+     * 
+     * @return true if there is at least one user or admin, 
+     * false if there are no users or there is a failure in fetching saved data.
+     */
     public boolean hasUsers() {
         try {
             if (userDao.findAll().size() > 0) {
@@ -292,6 +446,13 @@ public class Sportbook {
         return false;
     }
 
+    /**
+     * Method is used to define a username for the admin account.
+     * 
+     * @param username The username of the user to be made an admin
+     * 
+     * @return true if the update is successful, otherwise false
+     */
     public boolean setAdmin(String username) {
         try {
             User admin = userDao.findByUsername(username);
@@ -302,6 +463,10 @@ public class Sportbook {
         return true;
     }
 
+    /**
+     * Class is used to create an object containing monthly statistics data for a given activity.
+     * Statistics include the amount of workouts and the number of completed and uncompleted goals.
+     */
     public class StatisticsNode {
 
         private String activity;

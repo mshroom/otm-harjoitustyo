@@ -8,10 +8,12 @@ package sportbook.domain;
 import java.util.Objects;
 
 /**
- *
- * @author minna
+ * Class is used to create and control User objects
+ * 
+ * @author mshroom 
  */
 public class User {
+    
     private int id;
     private String username;
     private String password;
@@ -59,6 +61,13 @@ public class User {
         return hash;
     }
 
+    /**
+     * Method compares if two users equal. Users equal if they share the same username.
+     * 
+     * @param obj user to be compared
+     * 
+     * @return true if users equal, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

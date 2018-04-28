@@ -8,10 +8,12 @@ package sportbook.domain;
 import java.util.Objects;
 
 /**
- *
- * @author minna
+ * Class is used to create and control Activity objects
+ * 
+ * @author mshroom
  */
 public class Activity implements Comparable<Activity> {
+    
     private int id;
     private String name;
     private String unit;
@@ -55,6 +57,13 @@ public class Activity implements Comparable<Activity> {
         return hash;
     }
 
+    /**
+     * Method compares if two activities equal. Activities equal if names and units equal.
+     * 
+     * @param obj activity to be compared
+     * 
+     * @return true if activities equal, otherwise false
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -76,11 +85,17 @@ public class Activity implements Comparable<Activity> {
         return true;
     }
     
+    /**
+     * Method creates a String that contains the name and the unit of this activity.
+     */
     @Override
     public String toString() {
         return this.name + ", " + this.unit;
     }
 
+    /**
+     * Method sorts the two activities based on their names.
+     */
     @Override
     public int compareTo(Activity a) {
         return this.name.compareTo(a.getName());

@@ -33,7 +33,7 @@ public class Sportbook {
         this.userDao = userDao;
         this.activityDao = activityDao;
         this.actionDao = actionDao;
-        this.loggedIn = new User(-1, "Hello", "World");
+        this.loggedIn = new User(-1, "Hello", "World", false);
     }
 
     public User getLoggedIn() {
@@ -101,6 +101,16 @@ public class Sportbook {
     public boolean deleteAccount() {
         try {
             userDao.delete(this.loggedIn);
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
+    
+    public boolean deleteAccount(User user) {
+        try {
+            userDao.delete(user);
             return true;
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -261,6 +271,35 @@ public class Sportbook {
             }            
         }
         return statistics;
+    }
+
+    public List<User> getUsers() {
+        try {
+            return userDao.findAll();
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    public boolean hasUsers() {
+        try {
+            if (userDao.findAll().size() > 0) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            return false;
+        }
+        return false;
+    }
+
+    public boolean setAdmin(String username) {
+        try {
+            User admin = userDao.findByUsername(username);
+            userDao.setAdmin(admin);
+        } catch (SQLException ex) {
+            return false;
+        }
+        return true;
     }
 
     public class StatisticsNode {

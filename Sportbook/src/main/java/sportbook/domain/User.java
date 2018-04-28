@@ -15,11 +15,13 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private boolean admin;
     
-    public User(int id, String username, String password) {
+    public User(int id, String username, String password, Boolean admin) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.admin = admin;
     }
     
     public int getId() {
@@ -44,6 +46,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public boolean getAdmin() {
+        return this.admin;
     }
 
     @Override

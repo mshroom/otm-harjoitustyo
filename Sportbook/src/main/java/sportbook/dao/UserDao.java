@@ -13,13 +13,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
  * @author minna
  */
 public class UserDao {
-    
+
     private Database database;
 
     public UserDao(Database database) {
@@ -28,16 +27,17 @@ public class UserDao {
 
     public User create(String username, String password) throws SQLException {
         Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO User (username, password) VALUES (?, ?)");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO User (username, password, admin) VALUES (?, ?, ?)");
         stmt.setString(1, username);
         stmt.setString(2, password);
+        stmt.setBoolean(3, false);
 
         stmt.executeUpdate();
         stmt.close();
         connection.close();
         return this.findByUsername(username);
     }
-    
+
     public User findOne(int id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE id = ?");
@@ -50,12 +50,13 @@ public class UserDao {
         }
         String username = rs.getString("username");
         String password = rs.getString("password");
+        Boolean admin = rs.getBoolean("admin");
 
         rs.close();
         stmt.close();
         connection.close();
 
-        User u = new User(id, username, password);
+        User u = new User(id, username, password, admin);
         return u;
     }
 
@@ -71,12 +72,13 @@ public class UserDao {
         }
         int id = rs.getInt("id");
         String password = rs.getString("password");
+        Boolean admin = rs.getBoolean("admin");
 
         rs.close();
         stmt.close();
         connection.close();
 
-        User u = new User(id, username, password);
+        User u = new User(id, username, password, admin);
         return u;
     }
 
@@ -90,8 +92,9 @@ public class UserDao {
             int id = rs.getInt("id");
             String username = rs.getString("username");
             String password = rs.getString("password");
+            Boolean admin = rs.getBoolean("admin");
 
-            users.add(new User(id, username, password));
+            users.add(new User(id, username, password, admin));
         }
         rs.close();
         stmt.close();
@@ -105,6 +108,10 @@ public class UserDao {
         stmt.setInt(1, userToBeDeleted.getId());
         stmt.executeUpdate();
         stmt.close();
+        PreparedStatement stmt2 = connection.prepareStatement("DELETE FROM Action WHERE user_id = ?");
+        stmt2.setInt(1, userToBeDeleted.getId());
+        stmt2.executeUpdate();
+        stmt2.close();
         connection.close();
     }
 
@@ -123,6 +130,16 @@ public class UserDao {
         PreparedStatement stmt = connection.prepareStatement("UPDATE User SET password = ? WHERE id = ?");
         stmt.setString(1, password);
         stmt.setInt(2, user.getId());
+        stmt.executeUpdate();
+        stmt.close();
+        connection.close();
+    }
+
+    public void setAdmin(User admin) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE User SET admin = ? WHERE id = ?");
+        stmt.setBoolean(1, true);
+        stmt.setInt(2, admin.getId());
         stmt.executeUpdate();
         stmt.close();
         connection.close();

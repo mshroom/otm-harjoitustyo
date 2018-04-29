@@ -1,6 +1,6 @@
 # User guide
 
-Download the file [sportbook.jar](https://github.com/mshroom/otm-harjoitustyo/releases/tag/week5)
+Download the file [sportbook.jar](https://github.com/mshroom/otm-harjoitustyo/releases/tag/week6)
 
 ## Starting the application
 

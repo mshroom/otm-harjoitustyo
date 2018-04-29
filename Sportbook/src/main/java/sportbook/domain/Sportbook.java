@@ -250,7 +250,7 @@ public class Sportbook {
      * @return true if the creation is successful,
      * false if there is a failure in saving data.
      */
-    public boolean saveAction(String activity, int numberOfUnits, boolean goal, Date date) {
+    public boolean saveAction(String activity, double numberOfUnits, boolean goal, Date date) {
         try {
             if (goal) {
                 actionDao.create(this.loggedIn, this.findByToString(activity), numberOfUnits, true, false, date);

@@ -50,13 +50,13 @@ public class ActionDao {
      * 
      * @throws SQLException 
      */
-    public void create(User user, Activity activity, Integer units, Boolean setAsGoal, Boolean accomplished, Date date) throws SQLException {
+    public void create(User user, Activity activity, Double units, Boolean setAsGoal, Boolean accomplished, Date date) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Action (user_id, activity_id, time, units, accomplished, setAsGoal) VALUES (?, ?, ?, ?, ?, ?)");
         stmt.setInt(1, user.getId());
         stmt.setInt(2, activity.getId());
         stmt.setDate(3, new java.sql.Date(date.getTime()));
-        stmt.setInt(4, units);
+        stmt.setDouble(4, units);
         stmt.setBoolean(5, accomplished);
         stmt.setBoolean(6, setAsGoal);
 
@@ -84,7 +84,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             User user = userDao.findOne(rs.getInt("user_id"));
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             boolean accomplished = rs.getBoolean("accomplished");
             Date date = rs.getDate("time");
@@ -116,7 +116,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             boolean accomplished = rs.getBoolean("accomplished");
             Date date = rs.getDate("time");
@@ -150,7 +150,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, false, date));
@@ -183,7 +183,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, false, date));
@@ -214,7 +214,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             Date date = rs.getDate("time");
 
@@ -247,7 +247,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             Date date = rs.getDate("time");
 
@@ -281,7 +281,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            int units = rs.getInt("units");
+            double units = rs.getDouble("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, true, date));

@@ -126,11 +126,11 @@ public class CalendarView {
                     return;
                 }
                 String activity = comboBox.getValue().toString();
-                int units = 0;
+                double units = 0l;
                 try {
-                    units = Integer.parseInt(numberOfUnits.getText());
+                    units = Double.parseDouble(numberOfUnits.getText());
                 } catch (NumberFormatException e) {
-                    error.setText("Please insert a number into the units field");
+                    error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
                     numberOfUnits.clear();
                     return;
                 }
@@ -166,11 +166,11 @@ public class CalendarView {
                     return;
                 }
                 String activity = comboBox.getValue().toString();
-                int units = 0;
+                double units = 0l;
                 try {
-                    units = Integer.parseInt(numberOfUnits.getText());
+                    units = Double.parseDouble(numberOfUnits.getText());
                 } catch (NumberFormatException e) {
-                    error.setText("Please insert a number into the units field");
+                    error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
                     numberOfUnits.clear();
                     return;
                 }

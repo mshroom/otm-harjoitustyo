@@ -71,7 +71,7 @@ public class Database {
         ArrayList<String> list = new ArrayList<>();
         list.add("CREATE TABLE User (id integer PRIMARY KEY, username varchar(50), password varchar(50), admin boolean);");
         list.add("CREATE TABLE Activity (id integer PRIMARY KEY, name varchar(50), unit varchar(50));");
-        list.add("CREATE TABLE Action(id integer PRIMARY KEY, user_id integer, activity_id integer, time date, units integer, accomplished boolean, setAsGoal boolean, FOREIGN KEY (user_id) REFERENCES User(id), FOREIGN KEY (activity_id) REFERENCES Activity(id));");
+        list.add("CREATE TABLE Action(id integer PRIMARY KEY, user_id integer, activity_id integer, time date, units float, accomplished boolean, setAsGoal boolean, FOREIGN KEY (user_id) REFERENCES User(id), FOREIGN KEY (activity_id) REFERENCES Activity(id));");
         return list;
     }
     

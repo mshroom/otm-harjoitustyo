@@ -14,14 +14,14 @@ import java.util.Date;
  */
 public class Action implements Comparable<Action> {
     private int id;
-    private int units;
+    private double units;
     private Boolean accomplished;
     private Boolean setAsGoal;
     private User user;
     private Activity activity;
     private Date date;
     
-    public Action(int id, User user, Activity activity, Integer units, Boolean setAsGoal, Boolean accomplished, Date date) {
+    public Action(int id, User user, Activity activity, Double units, Boolean setAsGoal, Boolean accomplished, Date date) {
         this.id = id;
         this.user = user;
         this.activity = activity;
@@ -39,11 +39,11 @@ public class Action implements Comparable<Action> {
         this.id = id;
     }
 
-    public Integer getUnits() {
+    public Double getUnits() {
         return units;
     }
 
-    public void setUnits(Integer units) {
+    public void setUnits(Double units) {
         this.units = units;
     }
 

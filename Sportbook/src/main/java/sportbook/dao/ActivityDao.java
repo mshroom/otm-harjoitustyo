@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- *
- * @author minna
+ * Class is responsible for storing and accessing data in the Activity table of the database.
+ * 
+ * @author mshroom
  */
 public class ActivityDao {
 
@@ -25,6 +26,16 @@ public class ActivityDao {
         this.database = database;
     }
     
+    /**
+     * Method inserts a new activity to the database.
+     * 
+     * @param name Name of the activity, eg. "running"
+     * @param unit Name of the units to be used, eg. "meters"
+     * 
+     * @return The created Activity object
+     * 
+     * @throws SQLException 
+     */
     public Activity create(String name, String unit) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Activity (name, unit) VALUES (?, ?)");
@@ -37,6 +48,15 @@ public class ActivityDao {
         return this.findByNameAndUnit(name, unit);
     }
  
+    /**
+     * Method searches for the given activity id in the database.
+     * 
+     * @param id Activity id
+     * 
+     * @return Activity object with corresponding id or null if the activity id does not exist
+     * 
+     * @throws SQLException 
+     */
     public Activity findOne(int id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Activity WHERE id = ?");
@@ -59,6 +79,16 @@ public class ActivityDao {
         return a;
     }
     
+    /**
+     * Method searches for an activity with the given name and unit in the database
+     * 
+     * @param name Name of the activity
+     * @param unit Name of the unit
+     * 
+     * @return Activity object with corresponding name and unit or null if the activity does not exist
+     * 
+     * @throws SQLException 
+     */
     public Activity findByNameAndUnit(String name, String unit) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Activity WHERE name = ? AND unit = ?");
@@ -81,6 +111,13 @@ public class ActivityDao {
         return a;
     }
     
+    /**
+     * Method finds all saved activities in the database.
+     * 
+     * @return activities in a list, sorted alphabetically by name
+     * 
+     * @throws SQLException 
+     */
     public List<Activity> findAll() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Activity ORDER BY name");
@@ -101,6 +138,13 @@ public class ActivityDao {
         return activities;
     }
     
+    /**
+     * Method deleted an activity from the database.
+     * 
+     * @param toBeDeleted Activity object to be deleted, activity id must be correct
+     * 
+     * @throws SQLException 
+     */
     public void delete(Activity toBeDeleted) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM Activity WHERE id = ?");

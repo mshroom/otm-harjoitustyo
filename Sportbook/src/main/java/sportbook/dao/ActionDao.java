@@ -18,8 +18,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- *
- * @author minna
+ * Class is responsible for storing and accessing data in the Action table of the database.
+ * 
+ * @author mshroom
  */
 public class ActionDao {
 
@@ -37,6 +38,18 @@ public class ActionDao {
         this.userDao = userDao;
     }
 
+    /**
+     * Method inserts a new action to the database.
+     * 
+     * @param user User object for whom the action is saved
+     * @param activity Activity object for the activity of this action
+     * @param units Amount of units (defined by activity) in this action
+     * @param setAsGoal True if the action is saved as a goal
+     * @param accomplished True if the workout is already accomplished
+     * @param date Date object corresponding the day of the accomplished or planned workout
+     * 
+     * @throws SQLException 
+     */
     public void create(User user, Activity activity, Integer units, Boolean setAsGoal, Boolean accomplished, Date date) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Action (user_id, activity_id, time, units, accomplished, setAsGoal) VALUES (?, ?, ?, ?, ?, ?)");
@@ -52,6 +65,15 @@ public class ActionDao {
         connection.close();
     }
 
+    /**
+     * Method finds all actions saved for the given activity.
+     * 
+     * @param activity Activity object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public ArrayList<Action> findAllByActivity(Activity activity) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE activity_id = ?");
@@ -75,6 +97,15 @@ public class ActionDao {
         return actions;
     }
 
+    /**
+     * Method finds all actions of the given user.
+     * 
+     * @param user User object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public ArrayList<Action> findAllByUser(User user) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ?");
@@ -98,6 +129,15 @@ public class ActionDao {
         return actions;
     }
 
+    /**
+     * Method finds all uncompleted goals of a given user.
+     * 
+     * @param user User object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllUncompletedGoalsByUser(User user) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND setAsGoal = ? AND accomplished = ?");
@@ -121,6 +161,16 @@ public class ActionDao {
         return usersActions;
     }
 
+    /**
+     * Method finds all uncompleted goals of the given user matching the given activity.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllUncompletedGoalsByUserAndActivity(User user, Activity activity) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND setAsGoal = ? AND accomplished = ?");
@@ -144,6 +194,15 @@ public class ActionDao {
         return usersActions;
     }
 
+    /**
+     * Method finds all workouts and accomplished goals of the given user.
+     * 
+     * @param user User object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllWorkoutsByUser(User user) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND accomplished = ?");
@@ -167,6 +226,16 @@ public class ActionDao {
         return usersActions;
     }
 
+    /**
+     * Method finds all workouts and accomplished goals of the given user matching the given activity.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllWorkoutsByUserAndActivity(User user, Activity activity) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND accomplished = ?");
@@ -190,6 +259,16 @@ public class ActionDao {
         return usersActions;
     }
 
+    /**
+     * Method finds all completed goals of the given user matching the given activity.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllCompletedGoalsByUserAndActivity(User user, Activity activity) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Action WHERE user_id = ? AND activity_id = ? AND setAsGoal = ? AND accomplished = ?");
@@ -213,6 +292,16 @@ public class ActionDao {
         return usersActions;
     }
 
+    /**
+     * Method finds all actions of the given user matching the month of the given date.
+     * 
+     * @param user User object to be searched
+     * @param date Date object corresponding the month to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllByUserAndMonth(User user, Date date) throws SQLException {
         List<Action> actions = this.findAllByUser(user);
         List<Action> monthsActions = new ArrayList<>();
@@ -225,6 +314,17 @@ public class ActionDao {
         return monthsActions;
     }
 
+    /**
+     * Method finds all workouts and accomplished goals of the given user 
+     * on the day matching the given date.
+     * 
+     * @param user User object to be searched
+     * @param date Date object corresponding the day to be searched
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllWorkoutsByUserAndDay(User user, Date date) throws SQLException {
         List<Action> usersWorkouts = this.findAllWorkoutsByUser(user);
         List<Action> daysWorkouts = new ArrayList<>();
@@ -237,6 +337,18 @@ public class ActionDao {
         return daysWorkouts;
     }
 
+    /**
+     * Method counts how many units the given user has accomplished in the given activity 
+     * on the given day.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * @param date Date object corresponding the day in question
+     * 
+     * @return The sum of the accomplished units
+     * 
+     * @throws SQLException 
+     */
     public double countAllWorkoutsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
         List<Action> usersWorkouts = this.findAllWorkoutsByUserAndActivity(user, activity);
         double sum = 0l;
@@ -249,6 +361,18 @@ public class ActionDao {
         return sum;
     }
 
+    /**
+     * Method counts the amount of completed goals of the given user in the given activity
+     * on the given month.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * @param date Date object corresponding the month in question
+     * 
+     * @return The amount of completed goals
+     * 
+     * @throws SQLException 
+     */
     public int countCompletedGoalsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
         List<Action> usersGoals = this.findAllCompletedGoalsByUserAndActivity(user, activity);
         List<Action> monthsGoals = new ArrayList<>();
@@ -261,6 +385,18 @@ public class ActionDao {
         return monthsGoals.size();
     }
 
+    /**
+     * Method counts the amount of uncompleted goals of the given user in the given activity
+     * on the given month.
+     * 
+     * @param user User object to be searched
+     * @param activity Activity object to be searched
+     * @param date Date object corresponding the month in question
+     * 
+     * @return The amount of uncompleted goals
+     * 
+     * @throws SQLException 
+     */
     public int countUncompletedGoalsByUserAndMonth(User user, Activity activity, Date date) throws SQLException {
         List<Action> usersGoals = this.findAllUncompletedGoalsByUserAndActivity(user, activity);
         List<Action> monthsGoals = new ArrayList<>();
@@ -273,6 +409,16 @@ public class ActionDao {
         return monthsGoals.size();
     }
 
+    /**
+     * Method finds all uncompleted goals of the given user on the given day.
+     * 
+     * @param user User object to be searched
+     * @param date Date object corresponding the day in question
+     * 
+     * @return Action objects in a list
+     * 
+     * @throws SQLException 
+     */
     public List<Action> findAllUncompletedGoalsByUserAndDay(User user, Date date) throws SQLException {
         List<Action> usersGoals = this.findAllUncompletedGoalsByUser(user);
         List<Action> daysGoals = new ArrayList<>();
@@ -285,6 +431,15 @@ public class ActionDao {
         return daysGoals;
     }
 
+    /**
+     * Method deletes an action from the database.
+     * If a workout or an uncomplete goal is deleted, it is permanently removed from the database.
+     * If a completed goal is deleted, the goal will be marked as uncomplete but not removed.
+     * 
+     * @param action Action to be deleted
+     * 
+     * @throws SQLException 
+     */
     public void delete(Action action) throws SQLException {
         Connection connection = database.getConnection();
 
@@ -303,6 +458,14 @@ public class ActionDao {
         connection.close();
     }
 
+    /**
+     * Method changes the given action to accomplished.
+     * A goal is completed using this method.
+     * 
+     * @param action Action to be updated
+     * 
+     * @throws SQLException 
+     */
     public void complete(Action action) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE Action SET accomplished = ? WHERE id = ?");

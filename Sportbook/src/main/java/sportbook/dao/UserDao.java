@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author minna
+ * Class is responsible for storing and accessing data in the User table of the database.
+ * 
+ * @author mshroom
  */
 public class UserDao {
 
@@ -25,6 +26,17 @@ public class UserDao {
         this.database = database;
     }
 
+    /**
+     * Method inserts a new user to the database. 
+     * Users are created as normal users, admin rights can be added later.
+     * 
+     * @param username User's username
+     * @param password User's password
+     * 
+     * @return The created User object
+     * 
+     * @throws SQLException 
+     */
     public User create(String username, String password) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO User (username, password, admin) VALUES (?, ?, ?)");
@@ -38,6 +50,15 @@ public class UserDao {
         return this.findByUsername(username);
     }
 
+    /**
+     * Method searches for the given user id in the database.
+     * 
+     * @param id User's id
+     * 
+     * @return User object with corresponding id or null if the user id does not exist
+     * 
+     * @throws SQLException 
+     */
     public User findOne(int id) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE id = ?");
@@ -60,6 +81,15 @@ public class UserDao {
         return u;
     }
 
+    /**
+     * Method searches for the given username in the database.
+     * 
+     * @param username User's username
+     * 
+     * @return User object with corresponding username or null if the username does not exist
+     * 
+     * @throws SQLException 
+     */
     public User findByUsername(String username) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User WHERE username = ?");
@@ -82,6 +112,13 @@ public class UserDao {
         return u;
     }
 
+    /**
+     * Method finds all users in the database.
+     * 
+     * @return users in a list, sorted alphabetically by username
+     * 
+     * @throws SQLException 
+     */
     public List<User> findAll() throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT * FROM User ORDER BY username");
@@ -102,6 +139,13 @@ public class UserDao {
         return users;
     }
 
+    /**
+     * Method deletes a user and all user's saved data from the database.
+     * 
+     * @param userToBeDeleted User object to be deleted, user id must be correct
+     * 
+     * @throws SQLException 
+     */
     public void delete(User userToBeDeleted) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM User WHERE id = ?");
@@ -115,6 +159,14 @@ public class UserDao {
         connection.close();
     }
 
+    /**
+     * Method changes the username of the given user.
+     * 
+     * @param user User object to be updated, user id must be correct
+     * @param username New username
+     * 
+     * @throws SQLException 
+     */
     public void changeUsername(User user, String username) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE User SET username = ? WHERE id = ?");
@@ -125,6 +177,14 @@ public class UserDao {
         connection.close();
     }
 
+    /**
+     * Method changes the password of the given user.
+     * 
+     * @param user User object to be updated, user id must be correct
+     * @param password
+     * 
+     * @throws SQLException 
+     */
     public void changePassword(User user, String password) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE User SET password = ? WHERE id = ?");
@@ -135,11 +195,18 @@ public class UserDao {
         connection.close();
     }
 
-    public void setAdmin(User admin) throws SQLException {
+    /**
+     * Method changes the role of the given user to admin.
+     * 
+     * @param user User to be updated, user id must be correct
+     * 
+     * @throws SQLException 
+     */
+    public void setAdmin(User user) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("UPDATE User SET admin = ? WHERE id = ?");
         stmt.setBoolean(1, true);
-        stmt.setInt(2, admin.getId());
+        stmt.setInt(2, user.getId());
         stmt.executeUpdate();
         stmt.close();
         connection.close();

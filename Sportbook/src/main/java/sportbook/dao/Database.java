@@ -13,20 +13,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author minna
+ * Class is responsible for initializing and connecting to the database.
+ * 
+ * @author mshroom
  */
 public class Database {
     private String databaseAddress;
     
+    /**
+     * The address of the database is defined in the constructor.
+     * The address "jdbc:sqlite:databasename.db" refers to a file "databasename.db"
+     * that is located in the application's root directory.
+     * 
+     * @param databaseAddress The address of the database as described above
+     * @throws ClassNotFoundException 
+     */
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
     }
     
+    /**
+     * Method is used to connect to the database.
+     * 
+     * @return Connection to the database via DriverManager
+     * @throws SQLException 
+     */
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);
     }
     
+    /**
+     * Method initializes the database by executing necessary CREATE TABLE statements.
+     * If the database already exists, no tables will be created.
+     * If changes are made to the database structure and the CREATE TABLE statements are changed,
+     * the method will create a new database only if the existing database is deleted.
+     */
     public void init() {
         List<String> statements = sqlStatements();
         
@@ -41,6 +62,11 @@ public class Database {
         }        
     }
 
+    /**
+     * Method defines the CREATE TABLE statements for the database.
+     * 
+     * @return statements in a list
+     */
     private List<String> sqlStatements() {
         ArrayList<String> list = new ArrayList<>();
         list.add("CREATE TABLE User (id integer PRIMARY KEY, username varchar(50), password varchar(50), admin boolean);");

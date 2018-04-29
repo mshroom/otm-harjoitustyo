@@ -14,6 +14,29 @@ The software structure has three levels and the code is divided in three package
 
 ![diagram](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/diagram.png)
 
+### User interface
+
+The user interface has 8 different views:
+
+- Admin registration view. It is shown only when the application is used for the first time and no users have registrated yet.
+- User login view
+- User registration view
+- Admin view to list and delete users
+- Settings view to change user's personal data
+- Calendar view to see, add and delete daily goals and activities
+- Activity view to create and delete activities from the database
+- Statistics view to see user's personal monthly statistics
+
+User interface views are Scene objects created in the classes of the *ui* package. User interface can access software functionalities and database via calling the methods in *Sportbook* class.
+
+### Domain classes
+
+The three domain classes describe the users, activities and users' actions. Users' actions can be accomplished workouts, unaccomplished goals or accomplished goals. Each action relates to one user and one activity:
+
+![class diagram](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/diagram_domain_classes.png)
+
+The fourth domain class Sportbook contains the essential software logic and functionalities. The user interface calls the methods in Sportbook and Sportbook can access stored data via Dao classes. Sportbook methods include user login and registration, creation and deletion of activities and actions, data modification etc.
+
 ## Main features
 
 Some main features of the software are shown here as sequence diagrams.

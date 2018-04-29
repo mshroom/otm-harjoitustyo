@@ -22,4 +22,6 @@
 | 28.4. | 3    | creating admin features and adding admin view to ui |
 | 28.4. | 2    | adding more tests |
 | 28.4. | 2    | creating javadoc documentation for domain classes |
-| sum   | 53   |    |
+| 29.4. | 1    | creating javadoc documentation for dao classes |
+| 29.4. | 1    | modifying software architecture documentation and adding user manual |
+| sum   | 55   |    |

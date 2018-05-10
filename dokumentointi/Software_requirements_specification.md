@@ -8,21 +8,22 @@ Users are able to keep track of their workouts by setting goals and logging thei
 
 Users can create a user account. Registered users can only see and modify their own personal data.
 
+It is possible to create an administrator account to control the list of users.
+
 ## Features and additional ideas
 
-### Most crucial features
+### Features
 * User accounts can be created and users can log in
 * Users can create and view workouts
-
-### The next important features
 * Users can create and view goals and mark them as completed
 * Workouts and goals can be deleted
 * Activities can be added to database
-* Users can change usernames and passwords and user accounts can be deleted
+* Users can change usernames and passwords and delete their accounts
 * Users can see their statistics
+* An administrator account can be created
+* The administrator can see a list of all users and delete user accounts
 
 ### Possibilities for further development
-* An administrator account can be created. The administrator can see a list of all users and delete user accounts.
 * Users can add new goals and workouts easily by using saved routines and workout sets
 * Users can add comments to workouts and goals
 * Users can save both the time and the length of the same workout. The application can then calculate and save their speed.

@@ -12,6 +12,8 @@ Harjoitustyön aiheena on sovellus, johon käyttäjät voivat kirjata tietoa lii
 
 [Käyttöohje / User manual](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/User_guide.md)
 
+[Testausdokumentti / Testing](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/testing.md)
+
 ## Releaset
 
 [Viikko 5 / Week 5 release](https://github.com/mshroom/otm-harjoitustyo/releases/tag/week5)

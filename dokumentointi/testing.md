@@ -7,11 +7,13 @@ Both automatic JUnit tests and manual testing has been used to test the software
 There are test classes for each *domain* and *dao* class. Tests cover all main features of the software.
 The most crucial tests are in the class SportbookTest. 
 
-While testing methods that save data, a temporary database is created. The temporary database is deleted after each test.
+Tests use a temporary database to store data. The temporary database is deleted after each test.
 
 ### Test coverage
 
-Tests cover c. 90 % of the code, excluding the user interface classes.
+Tests cover ca 90 % of the code, excluding the user interface classes.
+
+![Test report](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/test_report.png)
 
 ## Manual testing
 

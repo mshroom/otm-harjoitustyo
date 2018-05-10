@@ -7,6 +7,7 @@ package sportbook.domain;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import sportbook.dao.ActionDao;
 import sportbook.dao.ActivityDao;
 import sportbook.dao.Database;
 import sportbook.dao.UserDao;
+import sportbook.domain.Sportbook.StatisticsNode;
 
 /**
  *
@@ -192,6 +194,25 @@ public class SportbookTest {
     @Test
     public void userCanBeSetAdmin() {
         assertTrue(sportbook.setAdmin("Testuser"));        
+    }
+    
+    @Test
+    public void statisticsAreCreatedCorrectly() {
+        sportbook.saveAction("swimming, minutes", 100, false, calendar.getTime());
+        sportbook.saveAction("swimming, minutes", 40, false, calendar.getTime());
+        List<StatisticsNode> statistics = sportbook.createStatistics(calendar.getTime());
+        assertEquals(2, statistics.size());
+        if (statistics.size() == 2) {
+            StatisticsNode running = statistics.get(0);
+            StatisticsNode swimming = statistics.get(1);
+            System.out.println(running.getWorkouts() + " " + swimming.getWorkouts());
+            assertEquals("0.0", running.getWorkouts());
+            assertEquals("1", running.getUncompleted());
+            assertEquals("0", running.getCompleted());
+            assertEquals("2.0", swimming.getWorkouts());
+            assertEquals("0", swimming.getCompleted());
+            assertEquals("0", swimming.getUncompleted());
+        }
     }
     
     @After

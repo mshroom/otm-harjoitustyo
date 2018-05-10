@@ -37,6 +37,10 @@ The three domain classes describe the users, activities and users' actions. User
 
 The fourth domain class Sportbook contains the essential software logic and functionalities. The user interface calls the methods in Sportbook and Sportbook can access stored data via Dao classes. Sportbook methods include user login and registration, creation and deletion of activities and actions, data modification etc.
 
+## Storing data
+
+All data is saved to a local database file that is created when the application is launched for the first time. The class *Database* is responsible for initializing and connecting to the database. Classes *UserDao*, *ActivityDao* and *ActionDao* contain all methods to save data to the database and fetching data from the database. The user interface has no direct access to the database. Instead, the user interface calls the methods in Sportbook class, which then calls the methods in *dao* classes.
+
 ## Main features
 
 Some main features of the software are shown here as sequence diagrams.

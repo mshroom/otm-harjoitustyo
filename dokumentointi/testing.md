@@ -9,6 +9,10 @@ The most crucial tests are in the class SportbookTest.
 
 While testing methods that save data, a temporary database is created. The temporary database is deleted after each test.
 
+### Test coverage
+
+Tests cover c. 90 % of the code, excluding the user interface classes.
+
 ## Manual testing
 
 ### Installing and launching the application

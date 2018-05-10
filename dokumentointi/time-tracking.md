@@ -24,4 +24,7 @@
 | 28.4. | 2    | creating javadoc documentation for domain classes |
 | 29.4. | 1    | creating javadoc documentation for dao classes |
 | 29.4. | 1    | modifying software architecture documentation and adding user manual |
-| sum   | 55   |    |
+| 10.5. | 1    | making final modifications to application |
+| 10.5. | 1    | making final additions to tests |
+| 10.5. | 2    | creating test documentation and updating other documentation |
+| sum   | 59   |    |

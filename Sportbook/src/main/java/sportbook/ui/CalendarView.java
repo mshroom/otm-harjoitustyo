@@ -126,13 +126,21 @@ public class CalendarView {
                     return;
                 }
                 String activity = comboBox.getValue().toString();
-                double units = 0l;
+                int units = 0;
                 try {
-                    units = Double.parseDouble(numberOfUnits.getText());
+                    units = Integer.parseInt(numberOfUnits.getText());
+                    units = units * 100;
                 } catch (NumberFormatException e) {
-                    error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
-                    numberOfUnits.clear();
-                    return;
+                    try {
+                        double u = Double.parseDouble(numberOfUnits.getText());
+                        u = u * 100;
+                        u = Math.round(u);
+                        units = (int) u;
+                    } catch (NumberFormatException e2) {
+                        error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
+                        numberOfUnits.clear();
+                        return;
+                    }                    
                 }
                 if (!sportbook.saveAction(activity, units, false, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
@@ -166,13 +174,21 @@ public class CalendarView {
                     return;
                 }
                 String activity = comboBox.getValue().toString();
-                double units = 0l;
+                int units = 0;
                 try {
-                    units = Double.parseDouble(numberOfUnits.getText());
+                    units = Integer.parseInt(numberOfUnits.getText());
+                    units = units * 100;
                 } catch (NumberFormatException e) {
-                    error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
-                    numberOfUnits.clear();
-                    return;
+                    try {
+                        double u = Double.parseDouble(numberOfUnits.getText());
+                        u = u * 100;
+                        u = Math.round(u);
+                        units = (int) u;
+                    } catch (NumberFormatException e2) {
+                        error.setText("Please insert a number (e.g. 50 or 50.5) into the units field");
+                        numberOfUnits.clear();
+                        return;
+                    }                    
                 }
                 if (!sportbook.saveAction(activity, units, true, calendar.getTime())) {
                     error.setText("Problem occurred while accessing the database");
@@ -230,7 +246,7 @@ public class CalendarView {
 
     private Node createActionNode(Action action) {
         GridPane node = new GridPane();
-        Label label = new Label(action.getActivity().getName() + " " + action.getUnits() + " " + action.getActivity().getUnit());
+        Label label = new Label(action.getActivity().getName() + " " + ((double) action.getUnits() / 100) + " " + action.getActivity().getUnit());
         Button deleteButton = new Button("Delete");
         Label completedLabel = new Label("Goal completed!");
         Button completeButton = new Button("Mark as complete");

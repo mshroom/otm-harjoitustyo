@@ -250,7 +250,7 @@ public class Sportbook {
      * @return true if the creation is successful,
      * false if there is a failure in saving data.
      */
-    public boolean saveAction(String activity, double numberOfUnits, boolean goal, Date date) {
+    public boolean saveAction(String activity, int numberOfUnits, boolean goal, Date date) {
         try {
             if (goal) {
                 actionDao.create(this.loggedIn, this.findByToString(activity), numberOfUnits, true, false, date);
@@ -403,7 +403,8 @@ public class Sportbook {
             try {
                 Activity a = activities.get(i);
                 String activity = a.toString();
-                double workouts = actionDao.countAllWorkoutsByUserAndActivityAndMonth(loggedIn, a, date);
+                int w = actionDao.countAllWorkoutsByUserAndActivityAndMonth(loggedIn, a, date);
+                double workouts = (double) w / 100;
                 int completed = actionDao.countCompletedGoalsByUserAndActivityAndMonth(loggedIn, a, date);
                 int uncompleted = actionDao.countUncompletedGoalsByUserAndMonth(loggedIn, a, date);
                 StatisticsNode node = new StatisticsNode(activity, workouts, completed, uncompleted);

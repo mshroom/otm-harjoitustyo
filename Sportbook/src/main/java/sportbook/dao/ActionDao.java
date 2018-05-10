@@ -50,7 +50,7 @@ public class ActionDao {
      * 
      * @throws SQLException 
      */
-    public void create(User user, Activity activity, Double units, Boolean setAsGoal, Boolean accomplished, Date date) throws SQLException {
+    public void create(User user, Activity activity, int units, Boolean setAsGoal, Boolean accomplished, Date date) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO Action (user_id, activity_id, time, units, accomplished, setAsGoal) VALUES (?, ?, ?, ?, ?, ?)");
         stmt.setInt(1, user.getId());
@@ -84,7 +84,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             User user = userDao.findOne(rs.getInt("user_id"));
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             boolean accomplished = rs.getBoolean("accomplished");
             Date date = rs.getDate("time");
@@ -116,7 +116,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             boolean accomplished = rs.getBoolean("accomplished");
             Date date = rs.getDate("time");
@@ -150,7 +150,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, false, date));
@@ -183,7 +183,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, false, date));
@@ -214,7 +214,7 @@ public class ActionDao {
         while (rs.next()) {
             int id = rs.getInt("id");
             Activity activity = activityDao.findOne(rs.getInt("activity_id"));
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             Date date = rs.getDate("time");
 
@@ -247,7 +247,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             boolean setAsGoal = rs.getBoolean("setAsGoal");
             Date date = rs.getDate("time");
 
@@ -281,7 +281,7 @@ public class ActionDao {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             int id = rs.getInt("id");
-            double units = rs.getDouble("units");
+            int units = rs.getInt("units");
             Date date = rs.getDate("time");
 
             usersActions.add(new Action(id, user, activity, units, true, true, date));
@@ -349,9 +349,9 @@ public class ActionDao {
      * 
      * @throws SQLException 
      */
-    public double countAllWorkoutsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
+    public Integer countAllWorkoutsByUserAndActivityAndMonth(User user, Activity activity, Date date) throws SQLException {
         List<Action> usersWorkouts = this.findAllWorkoutsByUserAndActivity(user, activity);
-        double sum = 0l;
+        int sum = 0;
         for (int i = 0; i < usersWorkouts.size(); i++) {
             Action a = usersWorkouts.get(i);
             if (monthDate.format(a.getDate()).equals(monthDate.format(date))) {

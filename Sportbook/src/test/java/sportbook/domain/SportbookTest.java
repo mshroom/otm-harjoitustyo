@@ -205,7 +205,6 @@ public class SportbookTest {
         if (statistics.size() == 2) {
             StatisticsNode running = statistics.get(0);
             StatisticsNode swimming = statistics.get(1);
-            System.out.println(running.getWorkouts() + " " + swimming.getWorkouts());
             assertEquals("0.0", running.getWorkouts());
             assertEquals("1", running.getUncompleted());
             assertEquals("0", running.getCompleted());

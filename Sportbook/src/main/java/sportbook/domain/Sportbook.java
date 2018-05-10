@@ -62,7 +62,6 @@ public class Sportbook {
             this.loggedIn = user;
             return 3;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 4;
         }
     }
@@ -87,7 +86,6 @@ public class Sportbook {
             this.loggedIn = userDao.findByUsername(username);
             return 2;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 3;
         }
     }
@@ -112,7 +110,6 @@ public class Sportbook {
                 return 2;
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 3;
         }
     }
@@ -131,7 +128,6 @@ public class Sportbook {
             this.loggedIn = userDao.findByUsername(this.loggedIn.getUsername());
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -147,7 +143,6 @@ public class Sportbook {
             userDao.delete(this.loggedIn);
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -165,7 +160,6 @@ public class Sportbook {
             userDao.delete(user);
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -190,7 +184,6 @@ public class Sportbook {
                 return 2;
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 3;
         }
     }
@@ -216,7 +209,6 @@ public class Sportbook {
                 return 2;
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
             return 3;
         }
     }
@@ -234,7 +226,6 @@ public class Sportbook {
                 list.add(activity.toString());
             });
         } catch (SQLException ex) {
-            System.out.println(ex);
         }
         return list;
     }
@@ -259,7 +250,6 @@ public class Sportbook {
             }
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -278,7 +268,6 @@ public class Sportbook {
             actionDao.delete(action);
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -296,7 +285,6 @@ public class Sportbook {
             actionDao.complete(action);
             return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
             return false;
         }
     }
@@ -313,7 +301,6 @@ public class Sportbook {
         try {
             workouts = actionDao.findAllWorkoutsByUserAndDay(this.loggedIn, date);
         } catch (SQLException ex) {
-            System.out.println(ex);
             return null;
         }
         Collections.sort(workouts);
@@ -332,7 +319,6 @@ public class Sportbook {
         try {
             goals = actionDao.findAllUncompletedGoalsByUserAndDay(this.loggedIn, date);
         } catch (SQLException ex) {
-            System.out.println(ex);
             return null;
         }
         Collections.sort(goals);
@@ -352,7 +338,6 @@ public class Sportbook {
         try {
             actions = actionDao.findAllByUserAndMonth(this.loggedIn, date);
         } catch (SQLException ex) {
-            System.out.println(ex);
             return null;
         }
         for (int i = 0; i < actions.size(); i++) {
@@ -382,7 +367,6 @@ public class Sportbook {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
         }
         return null;
     }
@@ -410,7 +394,6 @@ public class Sportbook {
                 StatisticsNode node = new StatisticsNode(activity, workouts, completed, uncompleted);
                 statistics.add(node);
             } catch (SQLException ex) {
-                System.out.println(ex);
                 return null;
             }            
         }

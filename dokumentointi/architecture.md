@@ -52,3 +52,20 @@ In the login view, the user inputs their username and password to corresponding 
 ![login diagram](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/diagram_login.png)
 
 The user interface calls the **login** method in *Sportbook* class, with the username and password as parameters. *Sportbook* then calls *userDao* to find out if the username exists in the database. If the username exists, *Sportbook* checks if the given password is correct. If the username or the password is incorrect, the user interface shows an error message. Otherwise the user is logged in and the user interface will show the main scene with a welcome view that shows the username of the current user.
+
+### Create an activity
+
+In the activity view, the user inputs the name of the activity and the name of the units to be used with the activity.
+In this example, the activity is "swimming", and units "minutes". The user then clicks the create activity button.
+
+![create activity diagram](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/diagram_save_activity.png)
+
+The user interface calls the **createActivity** method in *Sportbook* class, with the name and units as parameters. *Sportbook* then calls *activityDao* to find out if the activity with similar name and units already exists in the database. If the activity exists, the user interface shows an error message. Otherwise *Sportbook* calls *ActivityDao* to create a new activity with the given data and the user interface refreshes the list of existing activities. If there is a failure in accessing the database, the user interface will show an error message.
+
+### Save a workout
+
+In the calendar view, the user chooses the activity from a dropdown menu and inserts the number of units accomplished. In this example, the user has been running 5000 meters. The user then clicks the add workout button.
+
+![save workout diagram](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/images/diagram_save_workout.png)
+
+The user interface calls the **saveAction** method in *Sportbook* class, with the workout data as parameters. *Sportbook* then calls *ActionDao* to create the workout for the current user. *ActionDao* inserts the data into the database. If there is a failure in accessing the database, ActionDao will throw an exception and the user interface will show an error message. Otherwise the data is saved and the user interface will refresh the list of workouts.

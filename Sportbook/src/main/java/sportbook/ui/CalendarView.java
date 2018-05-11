@@ -24,8 +24,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
- *
- * @author minna
+ * Class creates the calendar view where workouts and goals can be added and modified.
+ * 
+ * @author mshroom
  */
 public class CalendarView {
 
@@ -42,6 +43,11 @@ public class CalendarView {
         this.simpleDate = new SimpleDateFormat("dd/MM/yyyy");
     }
 
+    /**
+     * Method creates the settings view.
+     * 
+     * @return the view as a Parent object
+     */
     public Parent getView() {
 
         error = new Label("");
@@ -244,6 +250,13 @@ public class CalendarView {
         return viewGridPane;
     }
 
+    /**
+     * Method creates a node to be listed in the calendar view
+     * with information and complete / delete buttons for each action.
+     * 
+     * @param action workout or goal to be listed
+     * @return node to be shown on the list
+     */
     private Node createActionNode(Action action) {
         GridPane node = new GridPane();
         Label label = new Label(action.getActivity().getName() + " " + ((double) action.getUnits() / 100) + " " + action.getActivity().getUnit());
@@ -287,6 +300,9 @@ public class CalendarView {
         return node;
     }
 
+    /**
+     * Method refreshes the list of completed workouts.
+     */
     private void drawWorkoutList() {
         workoutNodes.getChildren().clear();
         List<Action> workouts = sportbook.getDailyWorkouts(calendar.getTime());
@@ -299,6 +315,9 @@ public class CalendarView {
         }
     }
 
+    /**
+     * Method refreshes the list of uncompleted goals.
+     */
     private void drawGoalList() {
         goalNodes.getChildren().clear();
         List<Action> goals = sportbook.getDailyGoals(calendar.getTime());

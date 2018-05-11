@@ -8,7 +8,7 @@ package sportbook.domain;
 import java.util.Date;
 
 /**
- * Class is used to create and control Action objects.
+ * Class is used to create and control Action objects. Action objects can be workouts or goals.
  * 
  * @author mshroom
  */

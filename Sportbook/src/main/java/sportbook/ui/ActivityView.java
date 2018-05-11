@@ -17,8 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /**
- *
- * @author minna
+ * Class creates the activity view where activities can be added and deleted.
+ * 
+ * @author mshroom
  */
 public class ActivityView {
 
@@ -29,6 +30,11 @@ public class ActivityView {
         this.sportbook = sportbook;
     }
 
+    /**
+     * Method creates the activity view.
+     * 
+     * @return the view as a Parent object
+     */
     public Parent getView() {
 
         Label nameLabel = new Label("Create a new activity");
@@ -102,6 +108,9 @@ public class ActivityView {
         return activityGridPane;
     }
 
+    /**
+     * Method refreshes the list of existing activities in the comboBox.
+     */
     private void refreshList() {
         comboBox.getItems().clear();
         ObservableList<String> list = sportbook.listActivities();

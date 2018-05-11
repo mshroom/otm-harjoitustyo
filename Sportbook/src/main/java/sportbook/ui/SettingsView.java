@@ -18,8 +18,9 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- *
- * @author minna
+ * Class creates the settings view where user account can be modified.
+ * 
+ * @author mshroom
  */
 public class SettingsView {
     
@@ -33,6 +34,11 @@ public class SettingsView {
         this.loginScene = loginScene;
     }
 
+    /**
+     * Method creates the settings view.
+     * 
+     * @return the view as a Parent object.
+     */
     public Parent getView() {
         Label usernameLabel = new Label("Select a new username");
         TextField usernameField = new TextField();

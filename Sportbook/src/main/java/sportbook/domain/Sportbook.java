@@ -355,7 +355,7 @@ public class Sportbook {
      * The method is useful in interpreting texts in the user interface.
      * 
      * @param activity
-     * @return 
+     * @return Activity object corresponding to the String representation.
      */
     private Activity findByToString(String activity) {
         try {

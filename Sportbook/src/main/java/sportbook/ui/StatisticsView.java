@@ -25,8 +25,9 @@ import sportbook.domain.Sportbook;
 import sportbook.domain.Sportbook.StatisticsNode;
 
 /**
- *
- * @author minna
+ * Class creates the statistics view where users can see their monthly statistics.
+ * 
+ * @author mshroom
  */
 public class StatisticsView {
 
@@ -45,6 +46,11 @@ public class StatisticsView {
         this.simpleDate = new SimpleDateFormat("MM/yyyy");
     }
 
+    /**
+     * Method creates the statistics view.
+     * 
+     * @return the view as a Parent object
+     */
     public Parent getView() {
         Button previousButton = new Button("Previous month");
         Button nextButton = new Button("Next month");
@@ -126,6 +132,9 @@ public class StatisticsView {
         return viewGridPane;
     }
 
+    /**
+     * Method refreshes the statistics table.
+     */
     private void drawStatistics() {
         activityBox.getChildren().clear();
         workoutBox.getChildren().clear();

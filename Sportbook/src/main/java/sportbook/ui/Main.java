@@ -32,8 +32,9 @@ import javafx.scene.layout.VBox;
 import sportbook.domain.User;
 
 /**
- *
- * @author minna
+ * Main class creates the user interface and starts the application.
+ * 
+ * @author mshroom
  */
 public class Main extends Application {
 
@@ -52,6 +53,11 @@ public class Main extends Application {
     VBox userNodes;
     Label launchError;
 
+    /**
+     * Method creates the initial scenes and shows the application.
+     * 
+     * @param stage 
+     */
     @Override
     public void start(Stage stage) {
         stage.setTitle("Sportbook");
@@ -326,7 +332,7 @@ public class Main extends Application {
         }
         stage.show();
     }
-
+    
     public static void main(String[] args) throws Exception {
 
         // Preparing database
@@ -342,7 +348,12 @@ public class Main extends Application {
 
         launch(Main.class);
     }
-
+    
+    /**
+     * Method refreshes the list of users.
+     * 
+     * @return true if there are users on the list, false if there are no users
+     */
     private boolean drawUserList() {
         userNodes.getChildren().clear();
         List<User> users = sportbook.getUsers();
@@ -355,6 +366,13 @@ public class Main extends Application {
         return false;
     }
 
+    /**
+     * Method creates a user node to be listed in the admin view
+     * with information and delete buttons for each user.
+     * 
+     * @param user User object to be listed
+     * @return node to be shown on the list
+     */
     private Node createUserNode(User user) {
         GridPane node = new GridPane();
         Label idLabel = new Label("" + user.getId());

@@ -27,4 +27,5 @@
 | 10.5. | 1    | making final modifications to application |
 | 10.5. | 1    | making final additions to tests |
 | 10.5. | 2    | creating test documentation and updating other documentation |
-| sum   | 59   |    |
+| 11.5. | 1    | making final modifications |
+| sum   | 60   |    |

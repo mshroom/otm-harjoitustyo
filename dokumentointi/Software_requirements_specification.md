@@ -36,7 +36,12 @@ The software is a Java desktop application that can be run in Linux operating sy
 
 ## User interface and functions
 
-The software has a graphical user interface that consists of 7 different views:
+The software has a graphical user interface that consists of 7 different views.
+
+[The first draft of the user interface](https://github.com/mshroom/otm-harjoitustyo/blob/master/dokumentointi/ui_first_draft.md)
+had 10 views. Some views were later combined or created as pop-up features.
+
+The final views are:
 
 1.  **Admin registration view** is shown when the application is launched for the first time. Here the user can decide
 to create an administrator's account or to use Sportbook without an administrator's account.

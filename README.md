@@ -20,6 +20,8 @@ Harjoitustyön aiheena on sovellus, johon käyttäjät voivat kirjata tietoa lii
 
 [Viikko 6 / Week 6 release](https://github.com/mshroom/otm-harjoitustyo/releases/tag/week6)
 
+[Loppupalautus / Final release](https://github.com/mshroom/otm-harjoitustyo/releases/tag/loppupalautus)
+
 ## Komentorivitoiminnot
 
 ### Testaus
